@@ -1,4 +1,4 @@
-# Generative Adversarial Nets
+# (creating draft) Generative Adversarial Nets
 ### Ian J. Goodfellow et al., 2014
 > https://arxiv.org/pdf/1406.2661.pdf
 
@@ -30,4 +30,13 @@
 
 프로포지션1. 주어진 G에 대해서 최적 D는
 p_data(x) / (p_data(x) + p_g(x))
+
+
+
+# well begin is half done!!
+
+참고 reference
+https://brunch.co.kr/@kakao-it/145
+https://www.slideshare.net/NaverEngineering/1-gangenerative-adversarial-network
+https://www.slideshare.net/carpedm20/pycon-korea-2016
 
