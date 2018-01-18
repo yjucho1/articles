@@ -36,7 +36,8 @@ p_data(x) / (p_data(x) + p_g(x))
 # well begin is half done!!
 
 참고 reference
-https://brunch.co.kr/@kakao-it/145
-https://www.slideshare.net/NaverEngineering/1-gangenerative-adversarial-network
-https://www.slideshare.net/carpedm20/pycon-korea-2016
+
+* https://brunch.co.kr/@kakao-it/145
+* https://www.slideshare.net/NaverEngineering/1-gangenerative-adversarial-network
+* https://www.slideshare.net/carpedm20/pycon-korea-2016
 
