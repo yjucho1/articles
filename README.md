@@ -9,9 +9,12 @@
 #### 1. 서론
 딥러닝은 이미지 인식, 음성인식, 자연어처리 등 인공지능 산업에서 데이터의 확률분포를 표현하는 다양한 모델을 발견하는 성과를 얻었다. 지금까지 딥러닝에서 가장 큰 성공은 고차원의 센서 입력값을 특정 클래스로 맵핑하는 판별모델(discriminative models)를 학습한 것이다. 이러한 성공적인 모델들은 그래디언트가 잘 작동하는 선형조각을 이용해 역전파와 dropout 알고리즘에 기반한다. 반면 깊은 생성모델은 상대적으로 큰 영향력을 미치지 못했는데, 최우추정 및 관련 방법에서 난해한 확률계산을 근사하기 어렵고 분포를 생성하는 목적에서 선형조각들의 장점을 이용하기 어렵기 때문이다. 이 논문에서 이러한 문제점을 피하면서 새로운 생성모델을 추정하는 과정을 제안하였다. 
 
-이 방식에서 생성모델은 적대적인 과정을 통해 학습된다. 어떤 샘플데이터가 훈련데이터에서 뽑힌것인지 생성모델에서 뽑힌것인지 결정하는 것을 학습하는 판별모델과 대치한다.
+이 방식에서 생성모델은 적대적인 과정을 통해 학습된다. 어떤 샘플데이터가 훈련데이터에서 뽑힌것인지 생성모델에서 뽑힌것인지 결정하는 것을 학습하는 판별모델과 적대관계를 가진다. 생성모델은 탐지에 걸리지 않고 위조지폐를 만들고 사용하는 위조지폐범과 유사하고, 반면 판별모델은 위조화폐를 발견하려고 하는 경찰에 비유할수 있다. 이 게임의 경쟁구도를 통해 두 팀은 위조화폐가 진짜와 구분되지 않을 때까지 그들의 방법을 개선한다. 
+
+이 방법론을 이용해 다양한 모델을 학습시키는 알고리즘과 최적화 알고리즘을 만들어낼 수 있다. 이 논문에서는 생성모델과 판별모델 모두 다중퍼셉트론 모형을 이용한 케이스를 탐색했다. 이 특별한 케이스를 적대적 네트워크(adversarial nets)라고 부르도록 하겠다. 이 경우에는 forward propagation을 통해 생성모델로부터 샘플데이터과, backpropagation와 dropout알고리즘을 이용해 두 모델을 학습시킬수 있다. 근사적 추정이나 마코프체인은 필요하지 않다. 
 
 #### 2. 관련문헌
+
 #### 3. 적대적 네트워크
 적대적 모델 방법론은 두 모델이 모두 다중레이어모델일때 가장 직접적으로 적용된다. Pg 분포를 학습하기 위해 우리는 노이즈변수에 대한 사전분포 pz를 정의한다. 그리고 pz는 theta_g를 파라미터로하는 다중퍼셉트론으로 표현되는 미분가능한 함수 G(z; theta_g)를 통해 데이터와 맵핑된다. 또한 스칼라 값을 아웃풋으로 하는 두번째 다중퍼셉트론 모델 D(x; theta_d)를 정의한다. D(x)는 x가 p_g가 아니라 데이터로부터 추출될 확률을 나타낸다. 우리는 학습데이터의 샘플과 G로 생성된 샘플 모두 정확히 분류할 확률을 최대화하도록 D를 학습힌다. 동시에 log(1-D(G(z)))를 최소화하도록 G를 학습시킨다. 
 즉 D와 G는 V(G, D)함수값을 가지는 minmax문제이다. 
@@ -30,13 +33,8 @@ the domain from which z is sampled, in this case uniformly. The horizontal line 
 of x. The upward arrows show how the mapping x = G(z) imposes the non-uniform distribution pg on
 transformed samples. G contracts in regions of high density and expands in regions of low density of pg. (a)
 Consider an adversarial pair near convergence: pg is similar to pdata and D is a partially accurate classifier.
-(b) In the inner loop of the algorithm D is trained to discriminate samples from data, converging to D
-∗
-(x) =
-pdata(x)
-pdata(x)+pg(x)
-. (c) After an update to G, gradient of D has guided G(z) to flow to regions that are more likely
-to be classified as data. (d) After several steps of training, if G and D have enough capacity, they will reach a
+(b) In the inner loop of the algorithm D is trained to discriminate samples from data, 
+converging to D∗(x) = pdata(x)/pdata(x)+pg(x). (c) After an update to G, gradient of D has guided G(z) to flow to regions that are more likely to be classified as data. (d) After several steps of training, if G and D have enough capacity, they will reach a
 point at which both cannot improve because pg = pdata. The discriminator is unable to differentiate between
 the two distributions, i.e. D(x) = 1/2
 
