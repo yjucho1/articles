@@ -40,19 +40,19 @@
 -------------
 
 
-for number of training iterations do
-
-  for k steps do
+for number of training iterations do \n
+  for k steps do \n
      * sample minibatch of m noise samples {z_1, ...., z_m} from noise prior p_z(z)
      * sample minibatch of m examples {x_1, ...., x_m} from data generating distributions p_data(x)
      * update the discriminator by ascending its stochastic gradient:
 
-<img width="100" height="">![식_dis](/gradient_discriminator.png)</img>
+![식_dis](/gradient_discriminator.png)
   end for
   * sample minibatch of m noise samples {z_1, ..., z_m} form noise prior p_g(z)
   * update the generator by descending its stochastic gradient:
 
-<img width="100" height="">![식_gen](/gradient_generator.png)</img>
+![식_gen](/gradient_generator.png)
+
 end for
 
 그래디언트 기반의 업데이트은 그래디언트 기반의 여러 학습 규칙(옵티마이저)를 사용할 수 있다. 이 논문의 실험에서는 모멘텀을 사용하였다.
