@@ -26,23 +26,25 @@
 실제 적용에서, 목적식 1은 G가 충분히 학습되는데 충분한 그래디언트를 제공하지 못한다. 학습초기에는 G의 성능이 좋지 않으므로 D가 생성된 샘플를 구분할 가능성이 높다. 이경우, log(1-D(G(z))) saturate 된다. log(1-D(G(z))) 를 최소화하도록 G를 학습하는 대신에 logD(G(z))를 최대화하도록 G를 학습시킨다. 이렇게 하면 더 큰 그래디언트를 가지면서 동일한 결과를 얻을 수 있다. 
 
 ![그림1](/fig_1.png) 
-그림1. Generative adversarial nets are trained by simultaneously updating the discriminative distribution
-(D, blue, dashed line) so that it discriminates between samples from the data generating distribution (black,
-dotted line) px from those of the generative distribution pg (G) (green, solid line). The lower horizontal line is
-the domain from which z is sampled, in this case uniformly. The horizontal line above is part of the domain
-of x. The upward arrows show how the mapping x = G(z) imposes the non-uniform distribution pg on
-transformed samples. G contracts in regions of high density and expands in regions of low density of pg. (a)
-Consider an adversarial pair near convergence: pg is similar to pdata and D is a partially accurate classifier.
-(b) In the inner loop of the algorithm D is trained to discriminate samples from data, 
-converging to D∗(x) = pdata(x)/pdata(x)+pg(x). (c) After an update to G, gradient of D has guided G(z) to flow to regions that are more likely to be classified as data. (d) After several steps of training, if G and D have enough capacity, they will reach a
-point at which both cannot improve because pg = pdata. The discriminator is unable to differentiate between
-the two distributions, i.e. D(x) = 1/2
+그림1. 생성적 적대 네트워크는 데이터로부터 만들어진 분포(검은색, 점선)와 생성모델에 의한 분포(G, 녹색, 점선)에서 뽑힌 샘플을 구분하기 위해 판별분포(D, 파란색의 점선)을 업데이트하면서 동시에 학습된다. 아래의 수평선은 유니폼 분포의 z가 뽑히는 도메인을 나타낸다. 그 위의 수평선은 x의 도메인을 나타낸다. 위쪽방향의 화살표는 논유니폼 분포 p_g를 통해 x = G(z)를 맵핑하는 방법을 나타낸다. G는 고밀도 영역에서 계약을 하고 p_g의 저밀도 영역에서 확장합니다.(a) 수렴하기 전의 적대적 관계를 생각해보자: p_g는 p_data와 비슷하고 D는 부분적으로 정확한 분류기이다. (b) 알고리즘의 안쪽 루프에서 D는 데이터에서 뽑힌 샘플을 구별하도록 학습되며, D(x)=p_data(x)/(p_data(x) + p_g(x))로 수렴한다. (c) G를 업데이트한 후, D의 기울기는 G(z)가 데이터로 분류될수 있는 영역으로 이동할수 있도록 돕는다. (d) 몇번의 학습과정 후에는(충분한 capacity가 있다면) 두 모델은 p_g=p_data이기때문에 더이상 개선할수 없는 점에 도달하게 된다. 판별모델은 두 분포를 구분할수 없게 된다. (즉, D(x)=1/2)
 
  
 #### 4. 이론적 결과
 생성모델 G는 p_z를 따른 z에 대해 G(z)의 샘플의 분포로 확률분포 p_g를 암시적으로 정의한다.  따라서 충분한 데이터와 학습과정을 통해 알고리즘1이 p_data의 좋은 추정치로 수렴해야한다. 이 섹션의 결과는 비모수적 접근이다. 즉 확률분포함수의 공간에서 수렴성을 통해 inifite capacity를 가진 모델을 표현한다.  
 
 섹션 4.1에서는 이 미니맥스게임문제가 p_g = p_data인 글로벌 최적해를 가진다는 것을 보일것이다. 섹션 4.2에서는 알고리즘1이 목적식1을 최적화시키고, 원하는 결과를 얻는 다는 것을 보일것이다. 
+-------
+알고리즘1. 미니배치 stochastic gradient descent를 통해 적대적 네트워크를 학습시킨다. 판별모델을 학습시키는 스텝 수, k는 하이퍼파라미터이다. 여기서는 최소실험비용을 위해 k=1이다.
+-------
+for number of training iterations do
+    for k steps do
+    * sample minibatch of m noise samples {z_1, ...., z_m} from noise prior p_z(z)
+    * sample minibatch of m examples {x_1, ...., x_m} from data generating distributions p_data(x)
+    * update the discriminator by ascending its stochastic gradient:
+    
+
+
+
 
 ##### 4.1 p_g = p_data에서의 글로벌 최적해
 우리는 먼저 G가 주어졌을때 최적 판별기 D에 대해서 생각해보자
