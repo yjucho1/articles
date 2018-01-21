@@ -48,14 +48,14 @@
         * sample minibatch of m examples {x_1, ...., x_m} from data generating distributions p_data(x)
         * update the discriminator by ascending its stochastic gradient:
 
-        ![식_dis](/gradient_discriminator.png)
+   ![식_dis](/gradient_discriminator.png)
 
         end for
 
         * sample minibatch of m noise samples {z_1, ..., z_m} form noise prior p_g(z)
         * update the generator by descending its stochastic gradient:
 
-        ![식_gen](/gradient_generator.png)
+      ![식_gen](/gradient_generator.png)
 
     end for
 
