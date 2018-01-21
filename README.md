@@ -41,6 +41,7 @@
 
 
 for number of training iterations do
+
   for k steps do
      * sample minibatch of m noise samples {z_1, ...., z_m} from noise prior p_z(z)
      * sample minibatch of m examples {x_1, ...., x_m} from data generating distributions p_data(x)
