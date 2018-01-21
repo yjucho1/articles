@@ -33,25 +33,42 @@
 생성모델 G는 p_z를 따른 z에 대해 G(z)의 샘플의 분포로 확률분포 p_g를 암시적으로 정의한다.  따라서 충분한 데이터와 학습과정을 통해 알고리즘1이 p_data의 좋은 추정치로 수렴해야한다. 이 섹션의 결과는 비모수적 접근이다. 즉 확률분포함수의 공간에서 수렴성을 통해 inifite capacity를 가진 모델을 표현한다.  
 
 섹션 4.1에서는 이 미니맥스게임문제가 p_g = p_data인 글로벌 최적해를 가진다는 것을 보일것이다. 섹션 4.2에서는 알고리즘1이 목적식1을 최적화시키고, 원하는 결과를 얻는 다는 것을 보일것이다. 
--------
+
+-------------
 알고리즘1. 미니배치 stochastic gradient descent를 통해 적대적 네트워크를 학습시킨다. 판별모델을 학습시키는 스텝 수, k는 하이퍼파라미터이다. 여기서는 최소실험비용을 위해 k=1이다.
--------
+
+-------------
+
 for number of training iterations do
     for k steps do
     * sample minibatch of m noise samples {z_1, ...., z_m} from noise prior p_z(z)
     * sample minibatch of m examples {x_1, ...., x_m} from data generating distributions p_data(x)
     * update the discriminator by ascending its stochastic gradient:
+    ![식](/gradient_discriminator.png)
     
+    end for
+    * sample minibatch of m noise samples {z_1, ..., z_m} form noise prior p_g(z)
+    * update the generator by descending its stochastic gradient:
+    ![식](/gradient_generator.png)
+    
+end for
+그래디언트 기반의 업데이트은 그래디언트 기반의 여러 학습 규칙(옵티마이저)를 사용할 수 있다. 이 논문의 실험에서는 모멘텀을 사용하였다.
 
-
-
+-------
 
 ##### 4.1 p_g = p_data에서의 글로벌 최적해
 우리는 먼저 G가 주어졌을때 최적 판별기 D에 대해서 생각해보자
 
 프로포지션1. 주어진 G에 대해서 최적 D는
-p_data(x) / (p_data(x) + p_g(x))
+![식2](/eq_2.png)
 
+증명. G가 주어졌을때, D를 학습하는 기준은 V(G,D)를 최대화는 것이다. 
+![식3](/eq_3.png)
+
+p_data(x)와 p_z(x)는 \[0, 1] 사이 값을 가짐으로 \[0,1]구간의 a와 b에 대해 y->a*log(y) + b*log(1-y) 는 a/(a+b)일때 최대값을 가진다. 그 외 D는 supp(p_data) ∪ supp(p_g) 밖에서 정의될 필요가 없다. 
+
+D를 학습하는 목적은 x가 데이터 분포 p_data(with y = 1)에서 뽑힌것인지, 생성모델의 분포 p_g(with y = 0)에서 뽑인것인지 나타내는 Y 확률변수의 P(Y = y|x) 조건부확률을 추정하기위해 로그-우도값을 최대화하는 것으로 해석할 수 있다. 식(1)의 최소최대문제는 아래처럼 다시 쓸수 있다. 
+![식4](/eq_4.png)
 
 
 # well begin is half done!!
