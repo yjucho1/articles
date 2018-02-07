@@ -6,7 +6,6 @@
 겐 또는 간이라고 불리며, 2014년 Ian Goodfellow가 처음 제안한 방법론으로 최근 기하급수적으로 연구되고 있는 모델이다.
 ![gan_zoo](/gan_zoo.png)
 
-
 GAN에 대해서 말하기전에 먼저 머신러닝관점에서 GAN과 같은 generative model이 어떤 식으로 데이터를 학습하는 것인지 이야기해보자
 
 ### 머신러닝 모델은 학습방식에 따라 크게 지도학습(supervised learning)과 비지도학습(unsupervised learning)으로 나뉜다. 
@@ -52,9 +51,40 @@ CNN기반의 딥러닝 분류모델은 filter(혹은 kernel)이라 불리우는 
 
 ![generative_model](/generative_model.png)
 
+### GAN의 기본 아이디어
+이제까지 Generative adversarial network 중 첫번째 단어 generatvie의 의미를 살펴보았다. 그리고 마지막 단어 network는 다른 딥러닝 모델들이 그러하듯이 neural network구조를 의미하는 것이니 깊이 다루지 않고, 모델의 핵심이라고 할수 있는 adversarial의 의미를 알아보자.
 
-GAN은 Alexnet, ResNet처럼 특정한 네트워크의 구조를 말하는게 아니라, 입력데이터와 유사한 이미지를 생성하는 모델(Gentor라고 하자)을 학습시키는 방법을 제안한 방법론(framework)이다. 
+일단 우리의 목적을 다시 상기시켜보면, 우리는 입력데이터를 잘 이해하고 있는(데이터의 분포를 알고 있어, 이 분포에서 새로운 샘플을 뽑아낼수 있는) 모델(generator)를 얻고 싶다. 이 목적을 달성하기 위해 Goodfellow는 게임이론을 이용했다. generator가 다른 모델과 서로 경쟁하는 상황을 만들고, 서로를 속이거나 이기기 위해 노력하는 과정을 통해 잘 훈련된 generator를 얻을 수 있다는 것이다. 
 
-Goodfellow는 게임이론을 이용하여 generator생성하는 문제를 일종의 최적화 문제로 봤다. 예를들어
+GAN의 구조에서 서로 경쟁하는 것은 generator와 discriminator이다. discriminator는 입력데이터에서 뽑은 샘플과 generator가 생성한 샘플을 구별하는 것을 목적으로 한다. discriminator의 학습은 어떤 데이터가 들어오면, 이 데이터가 입력데이터에서 뽑은 진짜 데이터일 경우에는 1과 가까운 값을 출력하도록 하고 generator가 생성한 가짜 데이터일 경우에는 0과 가까운 값을 출력하도록 한다. 반면 generator는 최대한 입력데이터와 유사하게 가짜 데이터를 만들어내는 것을 목적으로 한다. 즉 discriminator를 속이기 위한 방향으로 학습이 된다. 
+
+![data_sample_gan](/data_sample_gan.png)
+![gen_sample_gan](/gen_sample_gan.png)
+
+이 구도를 설명하기 위해 Ian이 논문에서 실제로 사용한 비유는 화폐위조범(generator)과 경찰(discriminator)이다. 
+경찰은 진짜 돈(sample from input data)과 가짜 돈(generated sample from generator)을 구별하는 역할을 하고, 화폐위조범은 경찰을 속이기 위해 최대한 진짜같은 돈을 위조하는 것을 목표로 한다. 
+
+학습이 되기 전에는 경찰은 위조화폐를 식별하는 능력이 없고, 위조범도 진짜 화폐를 모사할수 있는 능력이 없을 것이다. 하지만 경찰이 한번 위조화폐를 구별해내면, 위조범은 학습을 통해 경찰을 속이기 위해 위조 능력이 올라가게 되고, 경찰도 학습을 통해 식별하는 능력이 더 올라가고.. 시간이 흐를수록 위조범의 모사능력이 높아질 것이다. 
 
 
+
+### GAN - objective
+
+![obj](/obj.png)
+![max_D](/max_D.png)
+![min_G](/min_G.png)
+
+
+### GAN - implement
+
+```
+if (isAwesome){
+  return true
+}
+```
+
+
+### GAN - Deep Convolutional GAN
+
+
+### GAN - anoGAN
