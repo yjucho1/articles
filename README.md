@@ -30,7 +30,7 @@ VAE 역시 일반적인 AutoEncoder처럼 Encoder와 Decoder 부분으로 이루
 
 VAE 구조
 
-![variational auto-encoder](/VAE.png)
+![variational auto-encoder](/VAE.jpg)
 
 
 Encoder는 고양이 사진과 같이 고차원의 데이터를 저차원 공간( latent space)상에서 임의의 벡터 z 로 매핑시키는 역할을 한다.
