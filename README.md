@@ -25,7 +25,7 @@ VAE 역시 일반적인 AutoEncoder처럼 Encoder와 Decoder 부분으로 이루
 
 __*일반적인 AutoEncoder*__
 
-![general auto-encoder](/AE.png =400x)
+![general auto-encoder](/AE.png |width=400)
 
 
 __*VAE 구조*__
