@@ -37,11 +37,11 @@ Encoder는 고양이 사진과 같이 고차원의 데이터를 저차원 공간
 
 이 때 latent space 상에서 임의의 vector z는 확률분포 Gaussian probability density 를 따른다고 가정하기 때문에 Encoder는 가우시안 분포의 파라미터인 평균과 분산를 아웃풋으로 내보낸다.
 
-![encoder](/encoder.jpg)
+![encoder](/encoder.png)
 
 Decoder는 잠재공간에 있는 임의의 벡터를 다시 원래의 고차원 데이터로 복원시키는 역할을 한다. 
 
-![decoder](/decoder.jpg)
+![decoder](/decoder.png)
 
 VAE의 목적은 입력데이터가 가진 정보를 최대한 보존하면서 저차원의 잠재공간으로 인코딩시키고, 다시 인코딩된 저차원의 임의의 latent vector를 원래의 입력데이터로 최대한 잘 복원시키는 것이다. 
 
@@ -90,7 +90,7 @@ reconstruction error부분은 입력데이터의 타입에 따라 다르지만, 
 
 BCE 외에 MSE를 사용할수 있고, practically 2가지 방법 모두 잘 작동한다고 한다.
 
-![reconstruct error](/recont_error.png = 250x)
+![reconstruct error](/recont_error.png)
 
 수식은 복잡하지만 결론은 간단하고, 구현은 더 간단하다.
 
