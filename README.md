@@ -37,7 +37,7 @@ Encoder는 고양이 사진과 같이 고차원의 데이터를 저차원 공간
 
 이 때 latent space 상에서 임의의 vector z는 확률분포 Gaussian probability density 를 따른다고 가정하기 때문에 Encoder는 가우시안 분포의 파라미터인 평균과 분산를 아웃풋으로 내보낸다.
 
-<img src="https://github.com/yjucho1/articles/blob/master/encoder.png" width="300"></img>
+<img src="https://github.com/yjucho1/articles/blob/master/encoder.png" width="250"></img>
 
 
 Decoder는 잠재공간에 있는 임의의 벡터를 다시 원래의 고차원 데이터로 복원시키는 역할을 한다. 
@@ -48,7 +48,7 @@ VAE의 목적은 입력데이터가 가진 정보를 최대한 보존하면서 �
 
 이 목적을 달성하기 위해 VAE는 최적의 확률분포를 찾아내는 방향으로 학습을 진행한다. 최적 확률분포 결정하는 파라미터(theta)는 아래와 같이 log maximum likehood를 최대화하는 방식으로 계산된다.
 
-<img src="https://github.com/yjucho1/articles/blob/master/log_likelihood.png" width="300"></img>
+<img src="https://github.com/yjucho1/articles/blob/master/log_likelihood.png" width="350"></img>
 
 
 하지만 우리는 z에 대해서 아는게 없으므로, (무수히 많은 경우의 수에 대해 모두 계산할수 없으므로) 사실 상 최적값을 바로 구하기 어렵다.
@@ -57,20 +57,20 @@ VAE의 목적은 입력데이터가 가진 정보를 최대한 보존하면서 �
 
 이 과정을 수식으로 나타내면 아래와 같다.
 
-<img src="https://github.com/yjucho1/articles/blob/master/ELBO.png" width="300"></img>
+<img src="https://github.com/yjucho1/articles/blob/master/ELBO.png" width="400"></img>
 
 마지막 줄에서 나타나듯이 log maximum likehood 를 최대화 하는 값은 결국 ELBO(evidence lower bound)를 최대화하는 것과 같다
 
 보통 딥러닝 모델은 목적함수로 loss function을 최소화하는 형태를 취하므로, 양 변에 마이너스를 취하여 - log p(xi)를 최소화하는 형태로 loss function을 다시 
 정리하면 아래와 같다.
 
-<img src="https://github.com/yjucho1/articles/blob/master/VAE_loss.png" width="300"></img>
+<img src="https://github.com/yjucho1/articles/blob/master/VAE_loss.png" width="350"></img>
 
 먼저 두번째 항은 KL Divergence Regularizer를 의미한다. 보통의 VAE는 z가 zero-mean Gaussian이라고 가정함으로 정규분포끼리의 KLD는 analytic solution으로 도출 가능하다. 이를 적용하면 두번째 항을 다음과 같이 다시 쓸 수 있다.
 
 https://arxiv.org/pdf/1312.6114.pdf - appendix B를 보면 나와있다
 
-<img src="https://github.com/yjucho1/articles/blob/master/KLD.png" width="300"></img>
+<img src="https://github.com/yjucho1/articles/blob/master/KLD.png" width="350"></img>
 
 첫번째 항은 reconstruction error를 의미한다. 정확한 기대값을 구하긴 어렵지만, q(z|xi)에서 무수히 많은 값을 샘플링하는 방식으로 근사가능하다.
 
@@ -80,11 +80,11 @@ http://jaejunyoo.blogspot.com/2017/05/auto-encoding-variational-bayes-vae-3.html
 
 어쨌든 인코더의 아웃풋인 확률 분포의 평균과 분산을 이용해 샘플링된 벡터 z를 아래처럼 구하는 것이다. 
 
-<img src="https://github.com/yjucho1/articles/blob/master/reparam.png" width="300"></img>
+<img src="https://github.com/yjucho1/articles/blob/master/reparam.png" width="200"></img>
 
 샘플링된 벡터z를 이용해 기대값을 풀어쓰면 입력데이터와 복원된 데이터간의 cross entropy형태가 된다. 
 
-<img src="https://github.com/yjucho1/articles/blob/master/cross_entropy.png" width="300"></img>
+<img src="https://github.com/yjucho1/articles/blob/master/cross_entropy.png" width="350"></img>
 
 
 reconstruction error부분은 입력데이터의 타입에 따라 다르지만, x를 0~1로 정규화시키면 D차원의 binary vector로 표현가능함으로 binary cross entropy를 이용한다.
