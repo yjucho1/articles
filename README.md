@@ -14,8 +14,7 @@
 * https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
 
 
-
-![generative_models](/generative_models.png){: width="500"}
+<img src="https://github.com/yjucho1/articles/blob/master/generative_models.png" width="500"></img>
 
 
 VAE(Variational AutoEncoder)는 데이터가 생성되는 과정(확률분포)을 학습하는 generative model 중 한가지이다.
