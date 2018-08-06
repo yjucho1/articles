@@ -12,13 +12,13 @@
 * Training on both normal and abnormal data
 * novel KDE interpretation
 
-<img src="/Donut/anomalies.png" width="500"></img>
+<img src="anomalies.png" width="500"></img>
 
-<img src="/Donut/Donut.png" width="500"></img>
+<img src="Donut.png" width="500"></img>
 
 *__Architecture__*
 
-<img src="/Donut/Donut VAE.png" width="500"></img>
+<img src="Donut VAE.png" width="500"></img>
 
 * 일반적인 VAE와 비슷한 network 구조이나 σ값 계산 시 Soft Plus 활성홤수를 사용하였다는 점이 차별점이다.
 
@@ -41,7 +41,7 @@
 
 __제안한 Modified ELBO__
 
-<img src="/Donut/M-ELBO.png" width="500"></img>
+<img src="M-ELBO.png" width="500"></img>
 
 αw : indicator, 1- normal point , 0 - abnormal point
 
@@ -58,7 +58,7 @@ __제안한 Modified ELBO__
 
 __MCMC-based missing data imputation__
 
-<img src="/Donut/MCMC.png" width="500"></img>
+<img src="MCMC.png" width="500"></img>
 
 
 * 테스트하는 데이터 X가 관측값 Xo과 결측값 Xm으로 구성되어 있다고 하면, VAE의 encoder를 이용해 첫번째 잠재벡터 z를 얻을수 있다. z에 맵핑되는 복원된 데이터를 (X'o, X'm)으로 표현한다. 이때 원래 입력데이터 (Xo, Xm) 중에 결측값 Xm만 X'm로 치환한다. 치환된 데이터 x' = (Xo, X'm)를 이용해 다시 z값을 얻고, 복원데이터 중 X'm를 이용해 입력 데이터를 다시 업데이트한다. 이러한 과정을 M iteration 반복하여 최종 x' = (Xo, X'm)를 얻을 수 있다. 
@@ -86,7 +86,7 @@ __MCMC-based missing data imputation__
 
 #### __Effects of Donut Techniques__
 
-<img src="/Donut/Effect.png" width="500"></img>
+<img src="Effect.png" width="500"></img>
 
 * M-ELBO contributes most of the improvement over the VAE baseline.
 
