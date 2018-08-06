@@ -58,4 +58,9 @@
 ### Experiements
 <img src="densenet_exp.png" width=600> </img>
 
+* ResNet(depth=110, #Prams=1.7M) 대비 DenseNet(depth=40, #Param=1.0M)는 더 적은 파라미터 수에도 불구하고, 더 좋은 성능을 보였다.
+    * ResNet(depth=110, #Prams=1.7M) : 6.61 (Error rate %)
+    * DenseNet(depth=40, #Param=1.0M) : 5.24 (Error rate %)
+
+* 각 데이터셋에 대해서 best result는 Blue로 표시했고, Bold 표시된 결과들은 completing methods 대비 더 좋은 성능을 보인 결과들이다.
 
