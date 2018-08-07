@@ -12,7 +12,8 @@
 
 #### Related works 
 
-* self-supervised learning :TBU
+* self-supervised learning : 비지도 학습의 대표적인 형태는 self-supervised learning이라고 불린다. 도메인 전문가가 붙인 라벨링을 대체하기 위해 원본 이미지에서 바로 계산되는 수도-라벨링을 붙이는 사전처리 정보를 사용하는 것이다. 예를 들어 Doersch et al.에서는 한 이미지에서 잘라낸 패치의 상대적인 위치를 예측하는 형태이고, Noroozi and Favaro에서는 랜덤하게 섞인 패치를 다시 정렬시키도록 네트워크를 학습시키는 형태이다. Pathak et al. 에서도 공간적인 단서를 이용해서 인접한 픽셀을 이용해 missing pixel을 추정하도록 한다. Paulin et al. 는 이미지 검색을 사용하여 패치 레벨에서 Convolutional Kernel Network를 학습한다. 다른 것들은 연속적인 프레임들 사이의 카메라 변환을 예측하고, 추적 된 패치의 시간적 일관성(temporal coherence 또는 움직임에 기반한 비디오 세그먼트화(segmenting)를 이용하여 비디오에서 이용 가능한 시간 신호를 이용한다.공간적, 시간적 일관성에서 벗어나 다른 많은 신호들, 즉 이미지 컬러화, 교차 채널 예측 , 사운드 또는 인스턴스 카운팅이 탐구되었다. 최근에, 여러 단서를 결합하기위한 몇 가지 전략이 제안되었다. 본 연구와는 달리, 이러한 접근법은 도메인에 따라 달라지므로 전이가능한 피쳐를 뽑아내기 위해 사전 처리를 설계하기위해 전문적인 지식이 필요한다. 
+
 
 #### Architecture
 
@@ -65,6 +66,7 @@ __*Number of reassignments between epochs*__
 __*Choosing the number of clusters*__
 * 클러스터 수 (k값)가 어느정도 영향을 주는지 확인하기 위해 k값을 변경하면서 300 epoch 후 mAP 지표를 비교하였다(Figure 2(c)). 이미지넷 데이터는 본래 1000개의 클래스를 가지고 있어 k=1000에서 가장 좋은 성능을 낼것이라고 생각했으나, 실제로는 k=10000에서 베스트 퍼포먼스를 보였다. over-segmentation이 분명히 더 효과적임을 나타낸다.
 
-
+__*Visualization*__
+TBU
 
 
