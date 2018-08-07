@@ -124,17 +124,6 @@ MNIST, the Toronto Face Database(TFD), and CIFAR-10 데이터를 이용해 적�
 
 
 
-#### 6. 단점과 장점
-
-#### 7. 결과 및 추후 연구
-
-
-
-
-
-
-# well begin is half done!!
-
 참고 reference
 
 * https://brunch.co.kr/@kakao-it/145
