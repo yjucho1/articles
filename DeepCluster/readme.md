@@ -67,6 +67,6 @@ __*Choosing the number of clusters*__
 * 클러스터 수 (k값)가 어느정도 영향을 주는지 확인하기 위해 k값을 변경하면서 300 epoch 후 mAP 지표를 비교하였다(Figure 2(c)). 이미지넷 데이터는 본래 1000개의 클래스를 가지고 있어 k=1000에서 가장 좋은 성능을 낼것이라고 생각했으나, 실제로는 k=10000에서 베스트 퍼포먼스를 보였다. over-segmentation이 분명히 더 효과적임을 나타낸다.
 
 __*Visualization*__
-TBU
+* 
 
 
