@@ -72,5 +72,7 @@ GAN의 구조에서 서로 경쟁하는 것은 generator와 discriminator이다.
 ### GAN - objective
 
 <img src='obj.png' width=400></img>
+
 <img src='max_D.png' width=400></img>
+
 <img src='min_G.png' width=400></img>
