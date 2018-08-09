@@ -50,6 +50,9 @@
 
 
 #### Experiments
+
+##### Preliminary study
+
 * 두개의 서로 다른 assignments A와 B간의 공유되는 정보를 정량적으로 평가하기 위해 NMI 지표를 사용하였다
 <img src="NMI.png" width=200></img>
     * I : mutual information
@@ -66,7 +69,44 @@ __*Number of reassignments between epochs*__
 __*Choosing the number of clusters*__
 * 클러스터 수 (k값)가 어느정도 영향을 주는지 확인하기 위해 k값을 변경하면서 300 epoch 후 mAP 지표를 비교하였다(Figure 2(c)). 이미지넷 데이터는 본래 1000개의 클래스를 가지고 있어 k=1000에서 가장 좋은 성능을 낼것이라고 생각했으나, 실제로는 k=10000에서 베스트 퍼포먼스를 보였다. over-segmentation이 분명히 더 효과적임을 나타낸다.
 
-__*Visualization*__
-* 
+##### Visualization
+
+* First layer filters : Fig3에서 보듯이 첫번레 레이어의 대부분의 필터는 color information만 캐치한다. 이미지를 분류하는데 중요한 역할을 하지 않는다
+* 더 깊은 층의 레이어 : 더 깊은 층일수록 더 넙은 textural structure를 잡아내는 것으로 보인다. 
+    * 하지만 가장 마지막 레이어는 이미 캐치한 정보를 반복하는 것으로 보인다. 
+    * conv5보다 conv3 또는 conv4 레이어가 분명한 피쳐를 뽑아낸다.
+
+##### Linear classification on activations
+
+<img src="linear_classifier.png" width=600></img>
+
+* 레이어별로 비교 분석하여 어디에서부터 task specific 피쳐가 뽑히는 지를 알아보기 위해 몇개의 고정된 컨본루션레이어 위에 linear classifier를 붙여 학습시켜보았다. 
+
+* conv2부터 conv5까지 DeepCluster가 다른 방식들보다 1~6%정도 더 좋은 성능을 보였다.
+
+* conv3에서 가장 좋은 개선 효과가 나타났다. 
+
+* ImageNet 데이터에 대해서 AlextNet과 비교했을때, conv3단계에서는 4% 차이였다가 conv5단계에서 가장 큰 차이(12.3%)를 보였다.
+
+* Places 데이터셋에서 DeepCluster는 이미지넷데이터로 지도학습된 모델과 거의 유사한 성능을 보였다. 이는 도메인과 동떨어진 target task인 경우, 라벨링이 덜 중요함을 의미한다.
+
+#### Discussion
+
+<img src="robust.png" width=600></img>
+
+* ImangeNet 데이터는 잘 선별된 데이터가 클래스별로 균형적으로 구성되어 있다. 앞선 실험에서 클러스터의 갯수가 어느정도 클래스의 갯수로 비교가능하기때문에 이런 균형데이터가 실험의 편향을 준것으로 의심할수 있다.
+* 따라서, YFCC100M데이터처럼 클래스가 불균형 분포를 가진 데이터를 이용해 실험하였다. 그 결과 DeepCluster가 클래스 분포에 상관없이 시각적 피쳐를 뽑아내는데 로버스트함을 보였다.
+
+<img src="deeper_arch.png" width=300></img>
+
+* 지도학습에서는 통상 VGG나 ResNet처럼 더 깊은 네트워크일수록 성능이 올라가는 것으로 알려있다. 이러한 현상이 DeepCluster를 포함한 비지도학습 방식에서도 나타나는지 살펴보았다.
+* DeepCluster외 비지도학습 방식에서도 더 깊은 네트워크 구조가 더 좋은 성능을 보였다.
+
+
+
+
+
+
+
 
 
