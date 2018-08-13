@@ -6,8 +6,8 @@
 수정된 내용으로 다시 공유해주시는 것은 언제나 환영입니다. *출처만 표시해주세요*
 
 참고자료 : 허민석님의 https://youtu.be/EDGLf8eCK04
-* __*공식 문서 : https://autokeras.com/ *__
-* __*깃허브 : https://github.com/jhfjhfj1/autokeras *__
+* __공식 문서 : https://autokeras.com/ __
+* __깃허브 : https://github.com/jhfjhfj1/autokeras __
 
 ### Auto-keras란?
 * Auto-Keras는 자동화된 기계 학습 (AutoML)을 위한 오픈 소스 소프트웨어 라이브러리입니다.
@@ -94,8 +94,7 @@ from autokeras.classifier import ImageClassifier
 <img src='epoch_acc.png' width=500></img>
 
 
-* 최종적으로는 5 epoch 의 평균 정확도(출력된 Accuracy)가 그래프의 평가 지표로 기록됩니다. 
-
+    * 최종적으로는 5 epoch 의 평균 정확도(출력된 Accuracy)가 그래프의 평가 지표로 기록됩니다. 
 
 
 ```python
@@ -350,13 +349,12 @@ clf.save_searcher(searcher)
 ```
 
 # 4. 저장된 clf, searcher 다시 불러오기
- * classifier가 저장된 경로를 지정하여 Classifier를 다시 정의하면 됩니다. 
+ * classifier가 저장된 경로를 지정하여 Classifier를 다시 정의하면 됩니다.
  * 처음 classifier를 정의할때 경로를 따로 지정해주지 않았다면 실행 로그들이 /tmp/autokeras에 저장되어 있을 것입니다. 
- * 저장된 로그 파일들은 그래프 구조가 저장된 h5파일과 classifier, searcher, history 등이 있습니다.
+ * 저장된 로그 파일들은 모델들의 가중치가 저장된 h5파일과 classifier, searcher, history 등이 있을 것입니다.
  <img src='logs.png' width=500></img>
  
- * clf의 load_searcher 메소드를 이용해 searcher도 다시 불러올수 있습니다.
- 
+ * clf의 load_searcher 메소드를 이용해 searcher도 다시 불러올수 있습니다. 
 
 
 ```python
@@ -405,15 +403,13 @@ searcher.history
 
 # 5. graph 다시 불러온 후 torch 또는 keras 모델로 변환하기
 
-* searcher의 load_best_model()을 이용해 탐색한 모델 중 가장 좋은 그래프를 불러올수 있습니다.
+* searcher의 load_best_model()을 이용해 탐색한 모델 중 가장 좋은 모델을 가져올수있습니다.
 * 또는 load_model_by_id 메소드를 이용할수도 있습니다.
 * 모델 아키텍쳐(그래프)를 먼저 불러오고, graph의 produce model 메소드를 이용해 토치 모델로 변할수 있습니다.
 
 * Keras 기반 모델로 변환하고 싶을 경우, produce_keras_model 메소드를 이용하면 됩니다.
-    * <b> 해당 메소드는 github repo를 통해서 설치한 경우만 이용가능한다 (18.08.20) </b>
-
-* pip install autokeras로 설치한 경우 - 즉, pypi에는 아직 릴리즈되지 않은 것으로 보인다. 
-
+* <b> 해당 메소드는 github repo를 통해서 설치한 경우만 이용가능한다 (18.08.20) </b>
+* pip install autokeras로 설치한 경우 - pypi에는 아직 릴리즈되지 않은 것으로 보입니다. 
 
 
 ```python
@@ -523,14 +519,12 @@ keras_model.summary()
 
 # 6. 그래프에서 변환된 모델 학습시키기
 
-* 변환된 torch 또는 keras 모델은 모델 파라미터가 랜덤 초기화된 모델로 아직 학습되기 전입니다.
-* 학습 과정은 torch 또는 keras 모델 학습과 동일합니다.
-
+* 변환된 torch 또는 keras 모델은 모델 파라미터가 랜덤 초기화된 모델로 아직 학습되기 전 입니다.
+* 변환 후 모델 학습 과정은 torch 또는 keras 모델 학습과 동일합니다.
 * <b>학습 전에 y값 형태를 one-hot-encoding 형태로 변환해주어야합니다.</b>
 
 * 학습 후 모델 구조에 레이어를 추가한다던지, feature extractor역할만 하도록 일부 레이어만 사용하도록 변경하는 작업이 가능합니다.
 * 이후 과정은 본 가이드의 범위를 넘어서니 생략하도록 하겠습니다.
-
 
 
 ```python
@@ -568,11 +562,6 @@ keras_model.fit(x_train, y_train, epochs=5, batch_size=128, validation_data=(x_t
     50000/50000 [==============================] - 1504s 30ms/step - loss: 0.8635 - acc: 0.6994 - val_loss: 0.8612 - val_acc: 0.6963
     Epoch 5/5
     50000/50000 [==============================] - 1495s 30ms/step - loss: 0.8149 - acc: 0.7163 - val_loss: 0.7432 - val_acc: 0.7437
-
-
-
-
-
     <keras.callbacks.History at 0x13d1bc518>
 
 
