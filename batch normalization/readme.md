@@ -71,7 +71,8 @@ TBU
 	* <img src = 'inference_BN.png' width=500> </img>
 
 ## Batch-Normalized Convolutional Networks
-* 
+* 컨볼루션 레이어의 경우, 컨볼루션 연산의 성질을 유지하기 위해 피쳐맵의 서로 다른 위치에 대해서 각 각 normalized 되어야한다. 즉, 채널을 기준으로 노말리제이션이 되며, γ<sup>(k)</sup>와  β<sup>(k)</sup> 도 채널 단위로 학습이 된다. 
+* 예를 들어 m의 mini-batch-size, n의 channel size 를 가진 Convolution Layer에서 Batch Normalization을 적용시킨다고 해보자. convolution을 적용한 후의 feature map의 사이즈가 p x q 일 경우, 각 채널에 대해 m x p x q 개의 각각의 스칼라 값에 대해 mean과 variance를 구하는 것이다. 최종적으로 gamma와 beta는 각 채널에 대해 한개씩 해서 각 n개의 독립적인 Batch Normalization 변수들이 생기게 된다. 참고: https://shuuki4.wordpress.com/2016/01/13/batch-normalization-%EC%84%A4%EB%AA%85-%EB%B0%8F-%EA%B5%AC%ED%98%84/
 
 ## Batch Normalization enables higher learning rates
 
