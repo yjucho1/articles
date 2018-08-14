@@ -57,7 +57,7 @@ Z와 동일한 평균, 분산을 갖으면서 W와 ρ만큼의 상관관계를 �
 
 
 * __classification__ : y<sub>i</sub>가 D-dimensional one-hot vector라고 가정한다. regression과 마찬가지로 KL regularizer와 weight decay를 사용한다.
-<img src = 'classfication.png' width=500></img>
+<img src = 'classification.png' width=500></img>
 
 
 
