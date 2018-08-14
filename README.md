@@ -1,7 +1,7 @@
 # articles
 ### Papers I read
 
-* [ChoiceNet: Robust Learning by Revealing Output Correlations, Sungjoon Choi, Sanghoon Hong, Sungbin Lim (Kakao Brain, 2018)](https://github.com/yjucho1/articles/blob/master/ChoiceNet/README.md)
+* [ChoiceNet: Robust Learning by Revealing Output Correlations, Sungjoon Choi, Sanghoon Hong, Sungbin Lim (Kakao Brain, 2018)](https://github.com/yjucho1/articles/blob/master/ChoiceNet/readme.md)
 * [Generative Adversarial Nets, Ian J. Goodfellow et al., 2014](https://github.com/yjucho1/articles/blob/master/GAN/README.md)
 * [Densely Connected Convolutional Networks, Gao Huang et al., 2018](https://github.com/yjucho1/articles/blob/master/DenseNet/Readme.md)
 * [Deep Clustering for Unsupervised Learning of Visual Features, Mathilde Caron et al. Facebook AI Research, 2018](https://github.com/yjucho1/articles/blob/master/DeepCluster/readme.md)
