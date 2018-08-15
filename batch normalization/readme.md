@@ -71,18 +71,37 @@
 
 
 #### Training and Inference with Batch- Normalized Networks
-* 앞서 정의한 Batch normalizing transform은  train 과정에서는 mini-batch의 sample mean/variance를 사용한다.
-* inference를 할 때에도 같은 규칙을 적용하게 되면 mini-batch 세팅에 따라 inference가 변할 수도 있기 때문에 각각의 test example마다 deterministic한 결과를 얻기 위하여 sample mean/variance 대신 그 동안 저장해둔 sample mean/variance들을 사용하여 unbiased mean/variance estimator를 계산하여 이를 BN transform에 이용한다.
+* 앞서 정의한 Batch normalizing transform은  train 과정에서는 mini-batch의 sample mean/variance를 사용한다. 하지만 인퍼런스에서도 그 규칙을 그대로 사용하는 것은 바람직하지 않다. 
+* 우리는 input에 따른 deterministic output를 얻기 위하여 미니배치 기반의 통계값이 아니라, 전체 데이터에 대한 통계값을 사용해야한다. 
+* 인퍼런스에서는 학습과정에서 얻은 미니배치들의 평균, 분산들을 이용해 unbiased mean/variance estimator를 계산하여 이를 BN transform에 이용한다.
 
 	* <img src = 'inference_BN.png' width=500> </img>
 
-## Batch-Normalized Convolutional Networks
-* 컨볼루션 레이어의 경우, 컨볼루션 연산의 성질을 유지하기 위해 피쳐맵의 서로 다른 위치에 대해서 각 각 normalized 되어야한다. 즉, 채널을 기준으로 노말리제이션이 되며, γ<sup>(k)</sup>와  β<sup>(k)</sup> 도 채널 단위로 학습이 된다. 
-* 예를 들어 m의 mini-batch-size, n의 channel size 를 가진 Convolution Layer에서 Batch Normalization을 적용시킨다고 해보자. convolution을 적용한 후의 feature map의 사이즈가 p x q 일 경우, 각 채널에 대해 m x p x q 개의 각각의 스칼라 값에 대해 mean과 variance를 구하는 것이다. 최종적으로 gamma와 beta는 각 채널에 대해 한개씩 해서 각 n개의 독립적인 Batch Normalization 변수들이 생기게 된다. 참고: https://shuuki4.wordpress.com/2016/01/13/batch-normalization-%EC%84%A4%EB%AA%85-%EB%B0%8F-%EA%B5%AC%ED%98%84/
+#### Batch-Normalized Convolutional Networks
+* 컨볼루션 레이어를 이용한 네트워크에서는 컨볼루션의 성질을 유지하기 위해 피쳐맵의 서로 다른 위치에 대해서 각 각 normalized 되어야한다. 즉, 채널 단위로 노말리제이션이 되며, γ<sup>(k)</sup>와  β<sup>(k)</sup> 도 채널 단위로 학습이 된다. 
+* 예를 들어 mini-batch 사이즈가 m이고 convolution을 적용한 후의 feature map의 사이즈가 p x q 일 경우, 실제로 계산되는 배치 사이즈는 m'= m x p x q 개와 같다. 또한 gamma와 beta는 activation별로가 아닌 피쳐맵별로 학습된다. 
 
-## Batch Normalization enables higher learning rates
+#### Batch Normalization enables higher learning rates
+* 일반적으로 러닝 레이트값이 클수록 레이어를 통과할수록 가중치의 스케일이 커지거나 작아져서 vanishing 또는 exploding gradient를 야기하게 된다.
+* 하지만 배치 노말리케이션을 사용함으로써 가중치의 작은 변화가 레이어를 거치면서 증폭되는 현상을 막을수 있다. 
+* 실제로 가중치의 스케일이 커지면 배치노말리제이션을 통해 오히려 그래디언트가 더 작아져, 가중치가 exploding되는 것을 막는 효과가 이다. 
 
+#### Batch normalization regularizes the model
+* 학습과정에서 배치노말리제이션은 데이터를 개별 샘플이 아니라 같은 배치에 포함된 샘플과 동시에 계산하기 때문에 한개의 샘플에 대해서 deterministic한 값을 갖지 않는다.
+* 이러한 효과로 인해 네트워크가 오버피팅하는 것을 막아주는 regularizer역할을 한다는 것을 실험적으로 확인하였다. 
 
+### Experiemtns
+* architecture and hyper-parameters
+	* 3 fully connected layer with 100 acvation
+	* sigmoid activation function
+	* cross-entropy loss
+	* 50000 epoch
+	* batch size 60
+	* orignal Network : N, Network with BN : N<sub>BN</sub>
+
+<img src='exp1.png' width=600></img>
+
+* 학습이 진행될수록 배치노말리제이션을 사용한 네트워크가 더 높은 테스트 정확도를 보였다. 또한 마지막 레이어의 activation이 변화하는 것을 살펴봤을때, orignal network는 학습에 따라 평균과 분산 모두 급격한 변화를 보이지만 배치노말리제이션을 사용한 네트워크는 더 안정적인 변화를 보이는 것을 확인하였다. 
 
 
 
