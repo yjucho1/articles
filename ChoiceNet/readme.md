@@ -2,6 +2,8 @@
 
 #### Sungjoon Choi, Sanghoon Hong, Sungbin Lim (Kakao Brain, 2018)
 
+* implementation : https://github.com/sjchoi86/choicenet
+
 ## Introduction
 * 딥러닝 모델을 학습시키는 것은 크라우드 소싱 방법(Amazno's Mechanical Turk(AMT)) 등으로 수집된 방대한 양의 학습데이터가 필요하다. 하지만 현실적으로 크라우드 소싱에 의한 라벨들은 종종 노이즈를 포함하고 있다. 
 * 딥러닝모델은 라벨 데이터에 일관성이 없더라도 전체 데이터셋을 모두 기억하려는 경향이 있기때문에 노이즈가 포함된 학습데이터는 오버피팅을 야기하게 되고, 이로 인해 모델 일반화에 어려움을 겪게 된다. 
