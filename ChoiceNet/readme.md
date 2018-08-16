@@ -42,6 +42,11 @@ Z와 동일한 평균, 분산을 갖으면서 W와 ρ만큼의 상관관계를 �
 
 * theorem2에 T(W, Z)를 대입해보면 φ(ρ) = ρμ<sub>W</sub>이고, ψ(ρ) = root(1−ρ<sup>2</sup>) 에 해당한다. 따라서 T(W, Z) 연산을 통해 얻게 되는 새로운 랜덤 변수 W<sup> ̃</sup>는 W와 ρ만큼의 상관관계를 갖게 되며, 평균과 분산은 ρμ<sub>W</sub>, (1−ρ<sup>2</sup>)σ<sub>Z</sub><sup>2</sup>가 된다.
 
+<img src = 'theorem3.png' width=700></img>
+
+* W1과 W2의 covriance가 (4)와 (5)와 같을 때, 주어진 h에 대해서 y = W * h 로 계산하면 (y<sup>(1)</sup> = W<sup>(1)</sup> * h, y<sup>(2)</sup> = W<sup>(2)</sup> * h ) y<sup>(1)</sup>과 y<sup>(2)</sup>의 상관관계는 ρ가 된다. 
+* theorem3은 두 개의 랜덤 매트릭스간의 상관관계는 affine transform에 불변하기 때문에 MCDN block에서 가중치 매트릭스 W를 생성하기 위해 Cholesky transform을 사용할 수 있음을 의미한다. 
+
 
 ### Model Architecture
 
@@ -59,8 +64,22 @@ Z와 동일한 평균, 분산을 갖으면서 W와 ρ만큼의 상관관계를 �
 * __classification__ : y<sub>i</sub>가 D-dimensional one-hot vector라고 가정한다. regression과 마찬가지로 KL regularizer와 weight decay를 사용한다.
 <img src = 'classification.png' width=500></img>
 
+## Experiments
 
+### Regression Tasks
 
+### Classification Tasks
+
+* MNIST와 CIFAR-10 데이터를 이용해 실험한 결과, ChoiceNet이 기존의 state-of-art 수준 보다 높은 정확도를 보였다. 
+	* 비교군 : H. Zhang, M. Cisse, Y. N. Dauphin, and D. Lopez-Paz. mixup: Beyond empirical risk minimization. In Proc. of International Conference on Learning Representations, 2017
+	* 노이즈 데이터를 생성하기 위해 p 확률만큼 무작위로 라벨을 suffle 시킴.
+
+<img src = 'classification_result.png' width=600></img>
+
+## Conclusion
+
+* 이 논문에서는 노이즈한 학습 데이터에서 더 로버스트하게 타겟 모델을 학습하기 위해 choicenet이라는 방법을 제안하였다. 
+* 최적 mixture components 수 등 적절한 hyper-parameters를 선택하는 것은 choiceNet을 현장 적용을 위한 주제로 남겨두록 하겠다. 
 
 
 
