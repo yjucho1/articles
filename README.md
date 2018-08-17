@@ -1,4 +1,4 @@
-# articles
+# Contents
 ### Papers I read
 
 * [ChoiceNet: Robust Learning by Revealing Output Correlations, Sungjoon Choi, Sanghoon Hong, Sungbin Lim (Kakao Brain, 2018)](https://github.com/yjucho1/articles/blob/master/ChoiceNet/readme.md)
