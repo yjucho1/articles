@@ -18,7 +18,25 @@
 
 * <i>제안한 방법의 핵심은 <u>mixture of correlated density network(MCDN) bolck</u>이다. 이 방법은 correlated ouput을 모델링하도록 신경망의 가중치를 샘플링하는 <u>Cholesky tranform method</u>를 기반으로 한다.</i> 본 논문은 end-to-end 방식으로 타겟 분포를 추정함과 동시에 신경망의 아웃풋 correlation를 동시에 추론하는 최초 접근이라는 점에 의의가 있다.
 
-## Related Work : TBU
+## Related Work : 
+* 노이즈 라벨링을 다루기 위해서 다양한 연구들이 있었다. 
+	* [3] A.J.BekkerandJ.Goldberger.Trainingdeepneural-networksbasedonunreliablelabels.InProc.ofIEEE International Conference on Acoustics, Speech and Signal Processing, pages 2682–2686. IEEE, 2016 
+		→ 아웃풋 노이즈를 모델링하기 위해 여분의 레이어를 추가하는 것을 제안함
+	* [24] I. Jindal, M. Nokleby, and X. Chen. Learning deep networks from noisy labels with dropout regularization. In Proc. of IEEE International Conference onData Mining, pages 967–972. IEEE, 2016.
+		→ 공격적인 드랍아웃 regularization과 함께 노이즈 어답데이터션 레이어를 추가.
+	* [35] : G. Patrini, A. Rozza, A. K. Menon, R. Nock, and L. Qu. Making deep neural networks robust to label noise: a loss correction approach. In Proc. of the Conference on Computer Vision and Pattern Recognition, volume 1050, page 22, 2017.
+		→ 학습된 모델로부터 라벨 corruption matrix을 추정하고, 이 메트릭스를 이용해 모델을 튜닝함
+	* [23] L. Jiang, Z. Zhou, T. Leung, L.-J. Li, and L. Fei-Fei. Mentornet: Regularizing very deep neural networks on corrupted labels. arXiv preprint arXiv:1712.05055, 2017.
+		→ MentorNet은 각 인스턴스에 대한 가중치를 결정하고, StudentNet은 잘못 라벨링된 데이터로 인해 오버피팅되는 것을 극복하도록 학습함. 
+	* [39] D. Rolnick, A. Veit, S. Belongie, and N. Shavit. Deep learning is robust to massive label noise. arXiv, preprint arXiv:1705.10694, 2017.
+		→배치사이즈가 크고 러닝레이트가 낮을수록 robustness 측면에서는 더 효과적임을 실험적으로 밝힘
+	* [22] D. Hendrycks, M. Mazeika, D. Wilson, and K. Gimpel. Using trusted data to train deep networks on labels corrupted by severe noise. arXiv preprint arXiv:1802.05300, 2018.
+		→ 적은 수의 클린 데이터로부터 label corruption matrix을 학습하고, 이 메트릭스를 이용해 모델을 재 학습함.
+	* [42] A. Veit, N. Alldrin, G. Chechik, I. Krasin, A. Gupta, and S. Belongie. Learning from noisy large-scaledatasets with minimal supervision. In Conference on Computer Vision and Pattern Recognition, 2017.
+		→ 라벨을 클린징하는 네트워크를 제안함. 적은 수의 클린 데이터를 이용해 노이즈 데이터를 클린징하는 모델.
+
+* 그 외 학습데이터에 적은 수의 노이즈 라벨이 포함된 경우 regularization 측면에서 더 효과적이라는 연구도 있었다. 이들 연구들은 노이즈 라벨을 일부러 포함시키거나, 노이즈 라벨에 의한 오퍼피팅을 막기 위한 방법들을 제안하였다. 
+
 
 ## ChoiceNet
 
