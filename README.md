@@ -1,6 +1,6 @@
 # Contents
 ### Papers I read
-
+* [Visualizing and Understanding Convolutional Networks, Matthew D. Zeiler, Rob Fergus, 2013](https://github.com/yjucho1/articles/blob/master/VisualizingCNN/README.md)
 * [ChoiceNet: Robust Learning by Revealing Output Correlations, Sungjoon Choi, Sanghoon Hong, Sungbin Lim (Kakao Brain, 2018)](https://github.com/yjucho1/articles/blob/master/ChoiceNet/readme.md)
 * [Generative Adversarial Nets, Ian J. Goodfellow et al., 2014](https://github.com/yjucho1/articles/blob/master/GAN/README.md)
 * [Densely Connected Convolutional Networks, Gao Huang et al., 2018](https://github.com/yjucho1/articles/blob/master/DenseNet/Readme.md)
