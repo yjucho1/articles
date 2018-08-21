@@ -24,3 +24,11 @@
 	* LSGAN의 두 가지 구조를 설계하였다. 첫번째는 112 x 112 이미지 생성을 위한 것으로 여러 종류의 scene datasets에 대해서 우수한 성능을 보였다. 두번째는 수 많은 클래스가 존재하는 문제를 위한 것으로 3470개의 클래스가 있는 handwritten Chinese charactor dataset으로 평가한 결과, LSGAN이 현실적인 수준의 문자 이미지를 생성하는 것을 확인하였다. 
 
 ### Related Work
+* Goodfellow et al.(2014) 이 후 image generation, image super-resolution, text to image synthesis, image to image translation 등 다양한 목적으로 활용되고 있다. 
+* GAN이 생성하는 이미지 품질을 향상하기 위해 DCGAN(Radford et al.),  : DCGAN
+* GAN이 생성하는 이미지 품질을 향상하기 위해 DCGAN(Radford et al.), LAPGANs(Denton et al.), feature matching technique(Salimans et al.) 등의 연구가 있었다. 
+* 또한 학습의 불안정성을 개선하기 위해 f-divergences(Nowozin et al.), unrolled objective function(Metz et al.), Wasserstein distance(Arjovsky et al.) 등의 연구들이 있었다.
+
+### Method
+
+	* 
