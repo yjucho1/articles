@@ -23,7 +23,8 @@ https://lilianweng.github.io/lil-log/2017/08/20/from-GAN-to-WGAN.html#low-dimens
 * 전통적인 통계방식은 데이터의 분포를 parameterized model을 가정하고, 주어진 데이터의 (로그)우도값을 최대화하는 파라미터를 학습한다. 실제 데이터의 분포를 P<sub>data</sub>라 하고, 가정한 모델을 P<sub>θ</sub>라 하면 log-likelihood를 최대화하는 것은 Kullback-Leibler divergence를 최소화하는 것과 같다. 
 * 하지만 KL divergence는 두 분포가 low dimensional manifold하면 infite 값을 갖는다. 그래서 일반적인 경우(고차원 데이터이지만 실제 데이터는 그보다 적은 저차원에 밀집되어 있는 형태)에 KL divergence를 최소화는 것은 적절하지 않다.
 
-<img src='low dimensional manifold2.png' width="500"></img>
+<img src='low dimensional manifold2.png' width="200"></img>
+<img src='low dimensional manifold3.png' width="200"></img>
 
 * 256 X 256 컬러 이미지를 256 X 256 X 3 차원의 이미지 공간에 있는 벡터라고 생각하면, 그러한 이미지 공간에 있는 대부분의 이미지 벡터들은 왼쪽과 같은 노이즈 이미지이다. 오른쪽과 같은 ‘유의미한’ 이미지는 사실상 이미지 공간에서 아주 작은 영역에, 혹은 선과 같은 아주 낮은 차원에 밀집되어 있을 것이다.
 
