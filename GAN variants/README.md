@@ -1,4 +1,4 @@
-https://rosinality.github.io/2017/04/%ED%81%B4%EB%9F%AC%EC%8A%A4%ED%84%B0%EB%A7%81%EA%B3%BC-%EB%A7%A4%EB%8B%88%ED%8F%B4%EB%93%9C/
+ https://rosinality.github.io/2017/04/%ED%81%B4%EB%9F%AC%EC%8A%A4%ED%84%B0%EB%A7%81%EA%B3%BC-%EB%A7%A4%EB%8B%88%ED%8F%B4%EB%93%9C/
 https://rosinality.github.io/2017/04/wasserstein-%EA%B1%B0%EB%A6%AC/
 https://myurasov.github.io/2017/09/24/wasserstein-gan-keras.html?r#wasserstein-gan
 https://lilianweng.github.io/lil-log/2017/08/20/from-GAN-to-WGAN.html#low-dimensional-supports
@@ -93,10 +93,10 @@ combined_model.compile(loss='mse', optimizer=optimizer)
 
 * 연속적인 확률 분포에서는 아래와 같이 정의된다. inf는 infimum을 나타내는 것으로 greatest lower bound를 의미하여 최소값을 나타낸다.
 
-<img src='W_continuous.png' width="100"></img>
+<img src='W_continuous.png' width="100"></img> --- 식 (1)
 <img src='expected cost.png' width="100"></img>
 
-* 왜 Wasserstein distance가 JS나 KL divergence보다 좋을까? 아래 처럼 2차원 공간에서 수직선 모양의 P분포(학습해야하는 분포)와 이를 학습하기 위해 parameter θ를 이용해 모델링한 Q분포를 생각해보자. 두 분포 사이의 거리는 아래처럼..
+* 왜 Wasserstein distance가 JS나 KL divergence보다 좋을까? 아래 처럼 2차원 공간에서 수직선 모양의 P분포(학습해야하는 )와 이를 학습하기 위해 parameter θ를 이용해 모델링한 Q분포를 생각해보자. 두 분포 사이의 거리는 아래처럼..
 
 <img src='convergence.png' width="500"></img>
 
@@ -105,14 +105,41 @@ combined_model.compile(loss='mse', optimizer=optimizer)
 * KL distance는 두 분포가 떨어져있을때 infity이고,  JS distnace는 θ가 0일때 갑자기 점프한다. 반면 Wasserstein distance는 더 smooth measure를 제공하고 이는 gradient descents를 이용해 θ를 학습할때 더 안정적인 학습이 가능한다.
 
 
+* 또한 논문에서는 P<sub>r</sub>와 P<sub>g</sub> 사이에 가능한 모든 경우에 대해서 joint distribution을 생각하는 것은 계산 비용이 너무 높으므로 식(1)의  Kantorovich-Rubinstein duality인 식(2)를 제안하였다. sup는 최대값을 의미한다. 
+
+<img src='WGAN-duality.png' width="300"></img> -- 식(2)
+
+* 식(2)에서는 ||f||<sub>L</sub> ≤ K 라는 조건( K-Lipschitz continuous) 을 만족시켜야하는 제약사항이 있다. Wasserstein distance 식을 변환하는 자세한 과정은 그 자체로 의미있고 긴 내용이기 때문에 여기서는 생략하도록 하겠다. (참고 : [자료1](https://lilianweng.github.io/lil-log/2017/08/20/from-GAN-to-WGAN.html), [자료2](https://vincentherrmann.github.io/blog/wasserstein/))
 
 
 
+* 정리하면, WGAN의 distriminator는 P<sub>r</sub>와 P<sub>g</sub> 사이의 wasserstenin distance를 측정하는 loss fuction 식(3)를 최소화하는 f<sub>w</sub>를 찾도록 학습된다. 이때 학습이 진행되는 동안 f<sub>w</sub>는 K -Lipschitz continuous 조건이 유지되어야한다. 
 
+<img src='WGAN-Dloss.png' width="300"></img> -- 식(3)
 
+	* K -Lipschitz continuous 조건이 유지되도록 하기 위해서 논문에서는 gradient가 업데이트 될때마다 w를 [-c, c]사이의 값이 되도록 clipping 시켜주는 방법을 사용하였다. 
 
+<img src='WGAN_algorithm.png' width="500"></img> 
 
+	* vanillar GAN과 달라지는 점은 
+		* gradient가 업데이트될 때마다 w을 고정된 작은 범위 [-c, c] 사이 깂이 되도록 바꿔주는 것
+		* Discrimnator의 loss 함수로 Wasserstein distance라는 새로운 함수를 사용하여, Discriminator가 생성된 가짜 데이터와 진짜 데이터를 구분하는 직접적인 판별자 역할을 하는 것이 아니라 실제 분포와 생성된 분포 사이의 차이를 측정하는 조력자 역할을 하게 된다.
+		* 마지막으로 WGAN을 학습하기 위해 Adam과 같은 momentum based optimizer가 아닌 RMSProp를 사용하는 것이 더 효과적이었음을 실험적으로 확인하였다.  
 
+* 불행히도 WGAN은 완벽하지 않다. 특히 논문에서도 "Weight clipping is a clearly terrible way to enforce a Lipschitz constraint(Lipschitz constraint를 위해서 w를 [-c, c] 사이로 제한하는 것은 분명히 이상하다)"라고 언급되어 있다. 그 후속 논문들이 여럿 나왔고, 이는 나중을 위해 남겨두도록 하겠다.
+
+```python
+# ref. : https://github.com/keras-team/keras-contrib/blob/master/examples/improved_wgan.py
+
+def wasserstein_loss(y_true, y_pred):
+    """Calculates the Wasserstein loss for a sample batch.
+    The Wasserstein loss function is very simple to calculate. In a standard GAN, the discriminator has a sigmoid output, representing the probability that samples are real or generated. 
+    In Wasserstein GANs, however, the output is linear with no activation function! Instead of being constrained to [0, 1], the discriminator wants to make the distance between its output for real and generated samples as large as possible.
+    
+    The most natural way to achieve this is to label generated samples -1 and real samples 1, instead of the 0 and 1 used in normal GANs, so that multiplying the outputs by the labels will give you the loss immediately.
+    Note that the nature of this loss means that it can be (and frequently will be) less than 0."""
+    return K.mean(y_true * y_pred)
+```
 
 
 
