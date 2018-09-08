@@ -11,6 +11,7 @@
 * [Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift, Sergey Ioffe, Christian Szegedy  Google Inc., 2015](https://github.com/yjucho1/articles/blob/master/batch%20normalization/readme.md)
 
 ### Materials I studied
+* [From GAN to WGAN (작성 중)](https://github.com/yjucho1/articles/blob/master/fromGANtoWGAN/readme.md)
 
 * [Generative Adversarial Nets](https://github.com/yjucho1/articles/blob/master/GAN2/README.md)
 * [Variational Auto-Encoder](https://github.com/yjucho1/articles/blob/master/VAE/README.md)
