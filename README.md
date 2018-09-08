@@ -1,5 +1,7 @@
 # Contents
 ### Papers I read
+* [Unsupervised Deep Embedding for Clustering Analysis, J. Xie, R. Girshick, A. Farhadi (University of Washington, Facebook AI Reaserch), 2016](https://github.com/yjucho1/articles/blob/master/DEC/readme.md)
+
 * [Visualizing and Understanding Convolutional Networks, Matthew D. Zeiler, Rob Fergus, 2013](https://github.com/yjucho1/articles/blob/master/VisualizingCNN/README.md)
 * [ChoiceNet: Robust Learning by Revealing Output Correlations, Sungjoon Choi, Sanghoon Hong, Sungbin Lim (Kakao Brain, 2018)](https://github.com/yjucho1/articles/blob/master/ChoiceNet/readme.md)
 * [Generative Adversarial Nets, Ian J. Goodfellow et al., 2014](https://github.com/yjucho1/articles/blob/master/GAN/README.md)
