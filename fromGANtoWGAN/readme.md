@@ -14,13 +14,15 @@ Generative adversarial network(GAN)은 이미지나 자연어, 음성과 같은 
 GAN을 자세히 설명하기 전에 두 분포사이의 유사도를 정량화하는 두 가지 메트릭을 살펴보도록 하겠습니다. 
 
 1) [KL(Kullback - Leibler) divergence](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) 는 <i>p</i> 분포가 다른 분포 <i>q</i>와 얼마나 떨어져 있는지를 측정합니다. 
-<img src ='KL_divergence.gif'></img>
+
+    <img src ='KL_divergence.gif'></img>
+
 D<sub>KL</sub>는 p(x)==q(x)일때 최소값 zero 입니다.
 KL divergence는 비대칭적인 형태라는 점을 기억해두시길 바랍니다. 또한 p(x)가 0에 가깝고 q(x)가 non-zero일 경우, q의 효과는 무시됩니다. 이로 인해 두 분포를 동등하게 사용하여 유사도를 측정하고자 할때 잘못된 결과를 얻을수 있습니다.
 
 2) [Jensen-Shannon Divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence) 는 두 분포의 유사도를 특정하는 다른 메트릭으로 [0, 1] 사이값을 갖습니다. JS divergence는 대칭적입니다(야호!) 그리고 더 스무스(smooth)합니다. KL divergence와 JS divergence를 더 자세히 비교하는 내용은 이 [Quora post](https://www.quora.com/Why-isnt-the-Jensen-Shannon-divergence-used-more-often-than-the-Kullback-Leibler-since-JS-is-symmetric-thus-possibly-a-better-indicator-of-distance)를 참고하세요.
 
-<img src ='JS_divergence.gif'></img>
+    <img src ='JS_divergence.gif'></img>
 
 <img src ='KL_JS_divergence.png'></img>
 <i>Fig.1. 두 가우시안 분포, p는 평균 0과 분산 1이고 q는 평균 1과 분산 1. 두 분포의 평균은 m=(p+q)/2. KL divergence는 비대칭적이지만 JS divergence는 대칭적이다. </i>
@@ -31,6 +33,7 @@ GAN은 두 모델로 이루어져있습니다.
 
 * discriminator D는 주어진 샘플이 실제 데이터셋에서 나왔을 확률을 추정합니다. 감별사 역할로 실제 샘플과 가짜 샘플을 구분하도록 최적화되어 있습니다.
 * generator G는 노이즈 변수인 z(z는 잠재적으로 출력의 다양성을 나타냅니다)를 입력으로 받아 위조된 샘플을 만듭니다. 실제 데이터의 분포를 모사하도록 학습되어 생성한 샘플은 실제 데이터의 샘플과 유사하며, discriminator를 속이는 역할을 합니다.
+
 <img src ='GAN.png'></img>
 <i>Fig.2. GAN의 구조 (출처 : [여기](https://www.kdnuggets.com/2017/01/generative-adversarial-networks-hot-topic-machine-learning.html))</i>
 
@@ -48,17 +51,22 @@ p<sub>r</sub> | 실제 샘플 x에 대한 데이터 분포 | |
 하지만 G는 위조된 샘플이 D가 높은 확률로 진짜 데이터라고 판단하도록 학습됩니다. 그래서 E<sub>z ~ p<sub>z</sub>(z)</sub>[log(1-D(G(z))]가 최소화되길 원합니다.
 
 이 두 가지를 합쳐서, D와 G는 minmax game을 하게 되고 아래와 같은 손실함수를 최적화하도록 설계되어 있습니다. 
+
 <img src='GAN_loss.gif'></img>
+
 (E<sub>x ~ p<sub>r</sub>(x)</sub>[logD(x)]는 그래디언트 디센트 업데이트에서 G에 아무런 영향을 주지 않습니다.)
 
 ### What is the optimal value for D?
 자, 이제 잘 정의된 손실함수를 이용해 D에 대해서 가장 최적화된 값을 찾아보도록 하겠습니다.
+
 <img src='GAN_loss2.gif'></img>
 
 우리는 L(G, D)를 최대화는 최적의 D(x)값을 찾는 것이 목적입니다. 아래와 같은 라벨을 사용하여 인테그랄 안쪽의 식을 다시 나타내도록 하겠습니다. (x는 가능한 모든 경우에 대해서 샘플된 값이기때문에 인테그랄은 무시해도 됩니다.)
+
 <img src='opt_D_notation.gif'></img>
 
 <img src='opt_D.gif'></img>
+
 일단 generator가 최적으로 학습이 된다면, p<sub>g</sub>는 p<sub>r</sub>에 매우 가까워질것입니다. p<sub>g</sub> = p<sub>r</sub> 가 되면, D<sup>\*</sup>(x)은 1/2가 됩니다.
 
 ### what is the global optimal?
@@ -88,6 +96,7 @@ GAN이 실제 이미지 생성에서 좋은 성능을 보이고 있지만, 학�
 ∂f<sub>1</sub>/∂x = y, ∂f<sub>1</sub>/∂x = -x이기 때문에 한 iteration에서 x와 y는 각 각 x - η⋅y와 y + η⋅x로 동시에 업데이트 됩니다(η는 러닝 레이트임). x와 y가 서로 다른 부호를 가지면, 다음의 모든 그래디언트 업데이트는 진동하게 되고 그림3과 같이 불안정성이 시간이 갈수록 심해지는 경향으로 나타납니다.  
 
 <img src='nash_equilibrium.png' width=400></img>
+
 <i>Fig.3. xy를 최소화하도록 x를 업데이트하고, -xy를 최소화하기 위해 y를 업데이트하는 상황을 시뮬레이션한 결과(러닝레이트 η =0.1) iteration이 증가할수록 진동폭이 점점 커지고 불안정해지는 현상이 나타납니다.</i>
 
 ### Low dimensional supports
@@ -105,12 +114,14 @@ p<sub>g</sub> 역시 저차원 매니포드 공간에 놓여있습니다. genera
 결론적으로 p<sub>g</sub>와 p<sub>r</sub>이 저차원 매니포드 공간에 놓여있기때문에, 두 분포는 <i>fig.4</i>처럼 거의 확실하게 분리가능(disjoint)할 것입니다. 두 분포가 서로 분리할수있는 서포트를 갖을 경우, 우리는 항상 진짜와 가짜 샘플을 100% 구분할수 있는 완벽한 discriminator를 찾을수 있습니다. (증명과정이이 궁금하다면 [이 논문](https://arxiv.org/pdf/1701.04862.pdf)을 참조하세요.)
 
 <img src='low_dim_manifold.png' width=400></img>
+
 <i>Fig.4. 고차원공간에서 저차원 매니폴드는 거의 서로 겹치지 않습니다.왼쪽의 3차원 공간에서 두 직선처럼요. 또는 오른쪽의 3차원공간에서 두 평면처럼요.</i>
 
 ### Vanishing gradient
 만약 discriminator가 완벽하다면, 우리는 D(x) = 1 <sup>∀</sup>x ∈ p<sub>r</sub>와 D(x) = 0 <sup>∀</sup>x ∈ p<sub>g</sub>를 확신할수 있습니다. 따라서 손실함수 L은 0에 가까워지고, 학습 과정에서 loss를 업데이트할수 있는 gradient를 얻지 못하여 결국 학습이 종료됩니다. fig.5는 discriminator가 점점 좋아질수록 gradient가 더 빨리 사라지는(vanish) 현상을 나타냅니다. 
 
 <img src='GAN_vanishing_gradient.png' width=400></img>
+
 <i>Fig.5.먼저 DCGAN 모델을 1, 10, 25 epoch만큼 학습시킵니다. 그리고, <b>generator는 고정시킨채<b>, discriminator를 학습시키면서 손실함수의 gradient를 측정하였습니다. 4000번의 이터레이션 후에 5 order 수준으로 gradient가 빠르게 감소하는 것을 볼수 있습니다(in best case = after 1 epoch, Image source: [Arjovsky and Bottou, 2017)](https://arxiv.org/pdf/1701.04862.pdf)) </i>
 
 결론적으로, GAN을 학습시키는 것은 아래와 같은 딜레마를 격게 됩니다:
