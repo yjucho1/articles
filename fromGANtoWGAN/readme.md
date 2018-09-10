@@ -88,14 +88,14 @@ GAN이 실제 이미지 생성에서 좋은 성능을 보이고 있지만, 학�
 ∂f<sub>1</sub>/∂x = y, ∂f<sub>1</sub>/∂x = -x이기 때문에 한 iteration에서 x와 y는 각 각 x - η⋅y와 y + η⋅x로 동시에 업데이트 됩니다(η는 러닝 레이트임). x와 y가 서로 다른 부호를 가지면, 다음의 모든 그래디언트 업데이트는 진동하게 되고 그림3과 같이 불안정성이 시간이 갈수록 심해지는 경향으로 나타납니다.  
 
 <img src='nash_equilibrium.png'></img>
-<i>Fig.3. xy를 최소화하도록 x를 업데이트하고, -xy를 최소화하기 위해 y를 업데이트하는 상황을 시뮬레이션한 결과(러닝레이트 η =0.1) iteration이 증가할수록 진동폭이 점점 커지고 불안정해지는 현상이 나타남.
+<i>Fig.3. xy를 최소화하도록 x를 업데이트하고, -xy를 최소화하기 위해 y를 업데이트하는 상황을 시뮬레이션한 결과(러닝레이트 η =0.1) iteration이 증가할수록 진동폭이 점점 커지고 불안정해지는 현상이 나타남.</i>
 
 ### Low dimensional supports
 | Term | Explanation 
 ---------|---------
-[Manifold](https://en.wikipedia.org/wiki/Manifold)  | A topological space that locally resembles Euclidean space near each point. Precisely, when this Euclidean space is of dimension n, the manifold is referred as n-manifold. 
-[Support](https://en.wikipedia.org/wiki/Support_(mathematics)  | A real-valued function f is the subset of the domain containing those elements which are not mapped to zero.
----
+[Manifold](https://en.wikipedia.org/wiki/Manifold)  | 각 포인트 근처의 유클리드 공간과 로컬리 유사한 토폴로지 공간. 정확하게,이 유클리드 공간이 차원 n 인 경우, 매니폴드는 n - 매니 폴드라고합니다. |
+[Support](https://en.wikipedia.org/wiki/Support_(mathematics))  | 실수형 함수 f는 0으로 매핑되지 않은 요소들을 포함하는 도메인의 하위 집합입니다. 
+
 
 
 
