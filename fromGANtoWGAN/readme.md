@@ -24,7 +24,8 @@ KL divergence는 비대칭적인 형태라는 점을 기억해두시길 바랍�
 
     <img src ='JS_divergence.gif'></img>
 
-<img src ='KL_JS_divergence.png'></img>
+<img src ='KL_JS_divergence.png' width=400></img>
+
 <i>Fig.1. 두 가우시안 분포, p는 평균 0과 분산 1이고 q는 평균 1과 분산 1. 두 분포의 평균은 m=(p+q)/2. KL divergence는 비대칭적이지만 JS divergence는 대칭적이다. </i>
 
 ### Generative Adversarial Network (GAN)
@@ -34,7 +35,8 @@ GAN은 두 모델로 이루어져있습니다.
 * discriminator D는 주어진 샘플이 실제 데이터셋에서 나왔을 확률을 추정합니다. 감별사 역할로 실제 샘플과 가짜 샘플을 구분하도록 최적화되어 있습니다.
 * generator G는 노이즈 변수인 z(z는 잠재적으로 출력의 다양성을 나타냅니다)를 입력으로 받아 위조된 샘플을 만듭니다. 실제 데이터의 분포를 모사하도록 학습되어 생성한 샘플은 실제 데이터의 샘플과 유사하며, discriminator를 속이는 역할을 합니다.
 
-<img src ='GAN.png'></img>
+<img src ='GAN.png' width=400></img>
+
 <i>Fig.2. GAN의 구조 (출처 : [여기](https://www.kdnuggets.com/2017/01/generative-adversarial-networks-hot-topic-machine-learning.html))</i>
 
 학습과정에서 두 모델은 경쟁구조에 놓여 있습니다: G는 D를 속이려고 하고, 동시에 D는 속지 않으려고 합니다. zero-sum 게임에서 두 모델은 각자의 기능을 최대로 향상시킴으로써 서로의 목적을 달성하게 됩니다. 
