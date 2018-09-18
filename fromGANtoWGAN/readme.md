@@ -133,9 +133,20 @@ p<sub>g</sub> 역시 저차원 매니포드 공간에 놓여있습니다. genera
 이 딜레마는 분명히 GAN 학습을 매우 어렵게 만듭니다. ㅠ_ㅠ
 
 ### Mode collapse
-학습과정에서 
+학습과정에서 generator가 항상 동일한 아웃풋을 만들어낼수도 있습니다. 이 살패 현상은 'Mode Collapse'라고 부르며, GAN 학습과정에서 흔하게 발생합니다. 비록 generator가 discriminator를 속이는 데는 성공하였지만, 실제 데이터의 복잡한 분포를 학습하는데 실패하고 극단적으로 낮은 다양성을 갖는 작은 공간 안에 갇혀버린 경우입니다.
 
+<img src='mode_collapse.png' width=400></img>
+<i>Fig. 6. 학습된 DCGAN(MLP network with 4 layers, 512 units and ReLu activation function)에 의해 생성된 이미지들로 mode collapse 현상을 보이고 있습니다. Image source : [Arjovsky, Chintala, & Bottou, 2017.](https://arxiv.org/pdf/1701.07875.pdf)</i>
 
+### Lack of a proper evaluation metric
+GAN은 태생적으로 학습 진행과정을 알려주는 적절한 목적 함수가 없습니다. 적절한 평가 지표 없이는 어둠 속에서 학습이 진행되는 것과 같습니다. 언제 학습을 중단해야하는지, 복수개의 모델 중 어떤 것이 더 나은지 등을 판단하기 어렵습니다.
+
+## Improved GAN Training
+여러 연구를 통해 안정된 GAN 학습을 위해 아래와 같은 방법들이 도입되었습니다.
+앞의 다섯가지 방법은 ["Improve Techniques for Training GANS"](http://papers.nips.cc/paper/6125-improved-techniques-for-training-gans.pdf)에서 제안된 방법으로 GAN이 더 빠르게 수렴할수 있도록 하는 실용적인 기법들입니다. 마지막 두가지 방법은 [“Towards principled methods for training generative adversarial networks”](https://arxiv.org/pdf/1701.04862.pdf)에서 제안한 방법으로 disjoint distribution 문제를 해결하기 위해 사용되었습니다.
+
+<b>(1) Feature Matching </b>
+ 
 
 
 
