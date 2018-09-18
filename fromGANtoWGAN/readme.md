@@ -124,7 +124,7 @@ p<sub>g</sub> 역시 저차원 매니포드 공간에 놓여있습니다. genera
 
 <img src='GAN_vanishing_gradient.png' width=400></img>
 
-<i>Fig.5.먼저 DCGAN 모델을 1, 10, 25 epoch만큼 학습시킵니다. 그리고, <b>generator는 고정시킨채<b>, discriminator를 학습시키면서 손실함수의 gradient를 측정하였습니다. 4000번의 이터레이션 후에 5 order 수준으로 gradient가 빠르게 감소하는 것을 볼수 있습니다(in best case = after 1 epoch, Image source: [Arjovsky and Bottou, 2017)](https://arxiv.org/pdf/1701.04862.pdf)) </i>
+<i>Fig.5.먼저 DCGAN 모델을 1, 10, 25 epoch만큼 학습시킵니다. 그리고, <b>generator는 고정시킨채</b>, discriminator를 학습시키면서 손실함수의 gradient를 측정하였습니다. 4000번의 이터레이션 후에 5 order 수준으로 gradient가 빠르게 감소하는 것을 볼수 있습니다(in best case = after 1 epoch, Image source: [Arjovsky and Bottou, 2017)](https://arxiv.org/pdf/1701.04862.pdf)) </i>
 
 결론적으로, GAN을 학습시키는 것은 아래와 같은 딜레마를 격게 됩니다:
 * 만약 discriminator가 잘못된 판단하게 될 경우, generator는 정확한 피드백을 받지 못하게 되고 손실함수는 현실을 반영하지 못하게 됩니다.
@@ -146,8 +146,18 @@ GAN은 태생적으로 학습 진행과정을 알려주는 적절한 목적 함�
 앞의 다섯가지 방법은 ["Improve Techniques for Training GANS"](http://papers.nips.cc/paper/6125-improved-techniques-for-training-gans.pdf)에서 제안된 방법으로 GAN이 더 빠르게 수렴할수 있도록 하는 실용적인 기법들입니다. 마지막 두가지 방법은 [“Towards principled methods for training generative adversarial networks”](https://arxiv.org/pdf/1701.04862.pdf)에서 제안한 방법으로 disjoint distribution 문제를 해결하기 위해 사용되었습니다.
 
 <b>(1) Feature Matching </b>
- 
 
+<b>(2) Minibatch Discrimination </b>
+
+<b>(3) Historical Averagin </b>
+
+<b>(4) One-sided Label Smoothing </b>
+
+<b>(5) Virtual Batch Normalization </b>
+
+<b>(6) Adding Noises </b>
+
+<b>(7) Use Better Metric of Distribution Similarity </b>
 
 
 
