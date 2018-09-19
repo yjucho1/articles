@@ -146,20 +146,54 @@ GAN은 태생적으로 학습 진행과정을 알려주는 적절한 목적 함�
 앞의 다섯가지 방법은 ["Improve Techniques for Training GANS"](http://papers.nips.cc/paper/6125-improved-techniques-for-training-gans.pdf)에서 제안된 방법으로 GAN이 더 빠르게 수렴할수 있도록 하는 실용적인 기법들입니다. 마지막 두가지 방법은 [“Towards principled methods for training generative adversarial networks”](https://arxiv.org/pdf/1701.04862.pdf)에서 제안한 방법으로 disjoint distribution 문제를 해결하기 위해 사용되었습니다.
 
 <b>(1) Feature Matching </b>
+Feature matching은 generator의 결과와 실제 샘플 데이터를 비교하여 기대 수준의 통계값을 얻도록 discriminator를 최적화시키는 것입니다. 손실함수를 ||E<sub>x~p<sub>r</sub></sub>f(x) - E<sub>z~p<sub>z</sub></sub>f(G(z))||<sup>2</sup><sub>2</sub>와 같은 형태로 정의하고, f(x)는 평균이나 중간값같은 feature의 통계값을 사용합니다. 
 
 <b>(2) Minibatch Discrimination </b>
+Minibatch Discrimination 방식은 discriminator가 각 데이터를 독립적으로 처리하는게 아니라, 하나의 배치 안에서의 다른 데이터간의 관계를 고려하도록 설계하는 것입니다.
+
+미니배치에서 각 샘플들의 간의 유사도, c(x<sub>i</sub>, x<sub>j</sub>)를 추정하고 한개의 데이터가 같은 배치 내에서 다른 데이터들과 얼마나 가까운지를 나타내는 값, o(x<sub>i</sub>) = ∑<sub>j</sub> c(x<sub>i</sub>, x<sub>j</sub>)를 계산합니다. 계산된 o(x<sub>i</sub>)를 모델 입력값에 명시적으로 추가하여 다른 데이터들 간의 관계를 고려하여 학습되도록 합니다.
 
 <b>(3) Historical Averagin </b>
+dicrimnator와 generator의 손실함수 모두에 ||Θ - 1/t∑<sub>i=1</sub><sup>t</sup>Θ<sub>i</sub>||<sup>2</sup>를 추가합니다. Θ는 모델 파라미터를 나타내고, Θ<sub>i</sub>는 i번째 학습 과정에서의 파라미터로 Θ가 급격히 변화하는 것에 대해서 패널티를 주는 방식입니다.
 
 <b>(4) One-sided Label Smoothing </b>
+discriminator를 학습할때 라벨링 정보로 0과 1을 사용하는게 아니라, 0.9와 0.1를 사용하는 것입니다. 이렇게 하는 것이 모델의 불안정성을 감소시키는 효과를 준다고 합니다.
 
-<b>(5) Virtual Batch Normalization </b>
+<b>(5) Virtual Batch Normalization (VBN) </b>
+데이터를 노말라이즈할때 미니배치단위로 하는 것이 아니라, 고정된 배치(reference batch)를 이용하는 방식입니다. reference batch는 학습 초기에 한번 선별되어 학습이 진행되는 동안 변하지 않습니다.
+
+
+<b> Theano Implementation </b> : [openai/improved-gan](https://github.com/openai/improved-gan)
 
 <b>(6) Adding Noises </b>
+[low dimensional supports](https://lilianweng.github.io/lil-log/2017/08/20/from-GAN-to-WGAN.html#low-dimensional-supports)부분에서 설명한 것처럼 p<sub>r</sub>과 p<sub>g</sub>는 고차원공간에서 서로 겹치지 않고(disjoint), 이 때문에 그래디언트가 사라지는 문제가 발생한다. 인위적으로 분포를 펼쳐 두 확률분포가 서로 겹칠 확률을 높이기 위해, discriminator D의 인풋으로 연속적인 노이즈 값을 추가할 수 있습니다.
 
 <b>(7) Use Better Metric of Distribution Similarity </b>
+바닐라 GAN의 손실함수는 p<sub>r</sub>과 p<sub>g</sub>간의 JS divergence를 측정하는 것입니다. JS divergence는 두 분포가 서로 겹치지 않을때 의미있는 값을 가지지 않습니다. 
 
+이를 해결하기 위해 [Wasserstein metric](https://en.wikipedia.org/wiki/Wasserstein_metric)를 사용할 수 있습니다. Wasserstein metric는 더 연속적인 값의 범위를 가지고 있습니다. 다음 장에서 자세히 설명해보겠습니다.
 
+## Wasserstein GAN (WGAN)
+
+### What is Wasserstein distance?
+[Wasserstein Distance](https://en.wikipedia.org/wiki/Wasserstein_metric)은 두 확률분포간의 거리를 측정하는 지표입니다. Earth Mover's distance, 짧게 EM distance,라고도 부릅니다. 왜냐하면 어떤 확률 분포 모양을 띄는 흙더미를 다른 확률분포 모양을 가지도록 하는데 드는 최소 비용으로 해석할수 있기 때문입니다. 이 때 비용은 옮겨진 흙의 양과 이동한 거리를 곱하여 정량화합니다.
+
+먼저 간단한 <i>이산(discrete)</i> 확률 분포를 이용해 예를 들어 설명해보겠습니다. 예를 들어서 P와 Q 라는 두 분포가 있을때, 각 각은 4개의 흙더미를 가지고 있고 흙의 총량은 10이라고 해봅시다. 각 흙더미에 있는 흙의 양은 아래와 같습니다. 
+
+<img src='P_Q.png' width=200></img>
+
+P를 Q처럼 바꾸기 위해서는 
+* 먼저 P1에서 2만큼을 P2로 이동시킵니다. => (P1, Q1)이 같아집니다.
+* P2에서 2만큼을 P3로 이동시킵니다. => (P2, Q2)가 같아집니다.
+* Q3에서 1만큼을 Q4로 이동시킵니다. => (P3, Q3)과 (P4, Q4)가 같아집니다.
+
+P<sub>i</sub>와 Q<sub>i</sub>가 같아지게 하는데 드는 비용을 δ<sub>i</sub>라고 표시하면, δ<sub>i+1</sub> =  δ<sub>i</sub> +  P<sub>i</sub> -  Q<sub>i</sub>로 나타낼수 있습니다. 따라서 위의 과정을 수식으로 표현하면 아래와 같습니다.
+
+<img src='P_Q2.png' width=200></img>
+최종적으로 Earth Mover's distance W = ∑|δ<sub>i</sub>| = 5 가 됩니다.
+
+<img src='EM_distance_discrete.png' width=400></img>
+<i>Fig. 7. P와 Q가 같아지도록 흙더미를 옮기는 과정을 단계별로 나타낸 그림.</i>
 
 
 
