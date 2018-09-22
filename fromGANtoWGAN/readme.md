@@ -215,9 +215,31 @@ x를 출발점으로 하고 y를 도착점으로 할 때, 전체 옮겨지는 �
 
 최종적으로 우리는 EM distance로 계산되는 모든 값 중에서 최소값을 선택합니다. 위의 Wasserstein distance 정의에서 inf는 최소값에만 관심이 있다는 표시입니다. ([infimum](https://en.wikipedia.org/wiki/Infimum_and_supremum), greatest lower bound로도 알려져있습니다)
 
+## why Wasserstein is better than JS or KL divergence?
 
+저차원 매니폴드에서 두 분포가 겹치지 않을 때, Wasserstein distance는 여전히 의미있는 값과 연속적으로(smooth, 미분가능하게) 표현됩니다. 
 
+WGAN 논문에서는 간단한 예제를 통해서 이 아이디어를 설명합니다. 
 
+P와 Q라는 두 분포가 있다고 가정합시다.
+
+<img src ='P-Q_vertical.png' width=200> </img>
+
+<img src ='wasserstein_simple_example.png' width=400> </img>
+
+<i>Fig.8. θ가 0이 아니라면 P와 Q는 겹치지 않음.
+
+when θ≠0 :
+
+ <img src ='w_simle_example.png' width=400> </img>
+
+when θ = 0일때는 두 분포는 완전히 겹쳐집니다 :
+
+ <img src ='w_when0.png' width=300> </img>
+
+D<sub>KL</sub>는 두 분포가 서로 겹치지 않을 때는 무한대 값을 갖게 되고, D<sub>JS</sub>는 θ가 0일 때 값이 갑자기 튀게 되어 미분불가능해집니다. Wasserstein metric만 연속적인 값으로 측정되며, 이러한 성질은 그래디언 디센트를 사용하여 안정적인 학습을 하는데 큰 도움이 됩니다!
+
+Use Wasserstein distance as GAN loss function
 
 
 
