@@ -156,6 +156,7 @@ p<sub>g</sub> 역시 저차원 매니포드 공간에 놓여있습니다. genera
 학습과정에서 generator가 항상 동일한 아웃풋을 만들어낼수도 있습니다. 이 살패 현상은 'Mode Collapse'라고 부르며, GAN 학습과정에서 흔하게 발생합니다. 비록 generator가 discriminator를 속이는 데는 성공하였지만, 실제 데이터의 복잡한 분포를 학습하는데 실패하고 극단적으로 낮은 다양성을 갖는 작은 공간 안에 갇혀버린 경우입니다.
 
 <img src='mode_collapse.png' width=400></img>
+
 <i>Fig. 6. 학습된 DCGAN(MLP network with 4 layers, 512 units and ReLu activation function)에 의해 생성된 이미지들로 mode collapse 현상을 보이고 있습니다. Image source : [Arjovsky, Chintala, & Bottou, 2017.](https://arxiv.org/pdf/1701.07875.pdf)</i>
 
 ### Lack of a proper evaluation metric
@@ -279,15 +280,15 @@ Wasserstein distance를 어떻게 변경하는지 설명하는 것은 그 자체
 
 함수 f가 w를 파라미터로 가진 K-Lipschitz continuous functions의 집합, {f<sub>w</sub>}<sub>w ∈ W</sub> 에서 추출되었다고 가정해봅시다. 수정된 Wassertein-GAN에서 discriminator는 좋은 f<sub>w</sub>를 찾기위해 학습이 되고, 손실함수는 p<sub>r</sub>과 p<sub>g</sub> 사이의 wasserstein distance를 측정하게 됩니다. 
 
- <img src ='WGAN_loss.png' width=300> </img>
+ <img src ='WGAN_loss.png' width=400> </img>
 
 따라서 discriminator는 더이상 진짜 데이터와 generator가 생성한 가짜 데이터를 식별하는 직접적인 기준치가 아닙니다. 대신에 Wasserstein distance를 계산하기 위기 위해 사용되는 K-Lipschitz continuous function을 학습하게 됩니다. 학습과정에서 손실함수가 작아질수록, wasserstein distance는 점점 작아지게 되어 generator의 결과값은 실제 데이터 분포와 점점 가까워지게 됩니다.
 
 한가지 중요한 문제는 모든 것이 잘 작동하기 위해서는 학습과정에서 K-Lipschitz continuity를 유지하도록 하는 것입니다. 논문에서는 간단하지만 매우 실용적인 트릭을 사용하였습니다. 그래디어트가 업데이트될 때마다, 가중치 w를 아주 작은 범위로, 예를 들면 [-0.01, 0.01]로 고정시면 컴팩트한 파라미터 공간 W가 되도록 합니다.  f<sub>w</sub>는 하한선과 상한선이 생기게 되어 Lipschitz continuity를 유지하게 됩니다. 
 
- <img src ='WGAN_algorithm.png' width=400> </img>
+ <img src ='WGAN_algorithm.png' width=450> </img>
 
-<i>Fig.9. Wasserstein GAN 알고리즘 (Image source : [Arjovsky, Chintala, & Bottou, 2017.](https://arxiv.org/pdf/1701.07875.pdf) </i>
+<i>Fig.9. Wasserstein GAN 알고리즘 (Image source : [Arjovsky, Chintala, & Bottou, 2017.](https://arxiv.org/pdf/1701.07875.pdf)) </i>
 
 원래의 GAN 알고리즘과 비교하여 WGAN은 다음과 같은 변경을 수행합니다 :
 
@@ -297,7 +298,8 @@ Wasserstein distance를 어떻게 변경하는지 설명하는 것은 그 자체
 
 슬프게도 Wasserstein GAN은 완벽하지 않습니다. 심지어 WGAN 논문에서도 "가중치를 고정시키는 것은 명백히 Lipschitz constraint를 강제하는 끔찍한 방법"이라고 했습니다.(웁스!) WGAN은 여전히 학습이 불안정하거나, 가중치를 고정시킨 후 수렴속도가 느려지거나(고정 범위가 너무 큰 경우에 해당), 그래디언트가 사라지는(고정 범위가 너무 작은 경우)문제가 생길수 있습니다. 
 
-이후 가중치를 고정시키는 방법 대신에 그래디언트 패널티를 사용하는 등의 개선책이 논의되기도 하였습니다.[Gulrajani et al. 2017.](https://arxiv.org/pdf/1704.00028.pdf) 여기서는 자세히 설명하진 않겠습니다.
+이후 가중치를 고정시키는 방법 대신에 그래디언트 패널티를 사용하는 등의 개선책이 논의되기도 하였습니다.[Gulrajani et al. 2017.](https://arxiv.org/pdf/1704.00028.pdf) 
+여기서는 자세히 설명하진 않겠습니다.
 
 ## Example : Create New Pokemons!
 
