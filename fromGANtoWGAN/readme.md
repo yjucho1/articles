@@ -239,8 +239,23 @@ when θ = 0일때는 두 분포는 완전히 겹쳐집니다 :
 
 D<sub>KL</sub>는 두 분포가 서로 겹치지 않을 때는 무한대 값을 갖게 되고, D<sub>JS</sub>는 θ가 0일 때 값이 갑자기 튀게 되어 미분불가능해집니다. Wasserstein metric만 연속적인 값으로 측정되며, 이러한 성질은 그래디언 디센트를 사용하여 안정적인 학습을 하는데 큰 도움이 됩니다!
 
-Use Wasserstein distance as GAN loss function
+## Use Wasserstein distance as GAN loss function
 
+inf<sub>γ∼Π(p<sub>r</sub>,p<sub>g</sub>)</sub>를 구하기 위해 Π(p<sub>r</sub>, p<sub>g</sub>)에 속하는 모든 경우의 결합확률분포를 추적하는 것은 불가능합니다. 논문의 저자는 Kantorovich-Rubinstein duality를 이용해 새롭게 변형된 형태를 제안하였습니다.
+
+ <img src ='w_sup_ver.png' width=300> </img>
+
+sup([supremum](https://en.wikipedia.org/wiki/Infimum_and_supremum))는 inf(infimum)의 반대로 least upper bound를 측정하고자 하는 것, 즉 최대값을 의미합니다.
+
+### Lipschitz continuity?
+
+새로운 형태의 wasserstein metric에서 f는 ||f||<sub>L</sub> ≤ K라는 조건을 만족해야합니다. 즉, [K-Lipschitz continuous](https://en.wikipedia.org/wiki/Lipschitz_continuity) 조건을 만족해야합니다.
+
+모든 x<sub>1</sub>, x<sub>2</sub> ∈ ℝ 에 대해서 <b> |f(x<sub>1</sub>) -f(x<sub>2</sub>)| ≤ K |x<sub>1</sub> - x<sub>2</sub>| </b> 를 만족하는 실수값 K≥0이 존재할 때, 실수형 함수 f : ℝ → ℝ 가 K-Lipschitz continuous를 만족한다고 합니다. 
+
+여기서 K는 f(.)의 Lipschitz 상수라고 부릅니다. 모든 점에서 연속적으로 미분가능한 함수는 Lipschitx continuos합니다. 왜냐하면 미분은 |f(x<sub>1</sub>) -|f(x<sub>2</sub>)| / |x<sub>1</sub> - x<sub>2</sub>|이고, 미분가능하다는 것은 이값이 제한되어 있음을 의미하기 때문입니다. 하지만 반대로 Lipschitz continuous function이라고 해서 항상 모든 점에서 미분 가능함을 의미하지 않습니다. (그 예로 f(x) =|x|가 있습니다.)
+
+Wasserstein distance를 어떻게 변경하는지 설명하는 것은 그 자체로서 의미가 있기때문에 여기서는 자세한 내응은 스킵하도록 하겠습니다.  만약 선형 프로그래밍을 사용하여 Wasserstein metric를 계산하는 방법이 알고 싶거나,  Kantorovich-Rubinstein Duality를 통해 어떻게 그 쌍대 문제로 변형되는지 알고 싶다면 [이 포스트](https://vincentherrmann.github.io/blog/wasserstein/)를 참고하세요.
 
 
 
