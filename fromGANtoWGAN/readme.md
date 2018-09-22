@@ -9,7 +9,28 @@ Generative adversarial network(GAN)은 이미지나 자연어, 음성과 같은 
 
 여기서는 GAN에 사용되는 수식들을 설명하고자 하며, 왜 학습이 어려운지, 그리고 학습의 어려움을 해결하기 위해 향상된 GAN을 소개하고자 합니다. 
 
-### Kullback–Leibler and Jensen–Shannon Divergence
+  * [Kullback–Leibler and Jensen–Shannon Divergence](#kullback-leibler-and-jensen-shannon-divergence)
+  * [Generative Adversarial Network (GAN)](#generative-adversarial-network--gan-)
+    + [What is the optimal value for D?](#what-is-the-optimal-value-for-d-)
+    + [what is the global optimal?](#what-is-the-global-optimal-)
+    + [what does the loss function represent?](#what-does-the-loss-function-represent-)
+  * [problems in GANS](#problems-in-gans)
+    + [hard to achieve Nash equilibrium](#hard-to-achieve-nash-equilibrium)
+    + [Low dimensional supports](#low-dimensional-supports)
+    + [Vanishing gradient](#vanishing-gradient)
+    + [Mode collapse](#mode-collapse)
+    + [Lack of a proper evaluation metric](#lack-of-a-proper-evaluation-metric)
+  * [Improved GAN Training](#improved-gan-training)
+  * [Wasserstein GAN (WGAN)](#wasserstein-gan--wgan-)
+    + [What is Wasserstein distance?](#what-is-wasserstein-distance-)
+    + [why Wasserstein is better than JS or KL divergence?](#why-wasserstein-is-better-than-js-or-kl-divergence-)
+    + [Use Wasserstein distance as GAN loss function](#use-wasserstein-distance-as-gan-loss-function)
+    + [Lipschitz continuity?](#lipschitz-continuity-)
+  * [Example : Create New Pokemons!](#example---create-new-pokemons-)
+  * [Reference](#reference)
+
+
+## Kullback–Leibler and Jensen–Shannon Divergence
 
 GAN을 자세히 설명하기 전에 두 분포사이의 유사도를 정량화하는 두 가지 메트릭을 살펴보도록 하겠습니다. 
 
@@ -17,8 +38,7 @@ GAN을 자세히 설명하기 전에 두 분포사이의 유사도를 정량화�
 
     <img src ='KL_divergence.gif'></img>
 
-D<sub>KL</sub>는 p(x)==q(x)일때 최소값 zero 입니다.
-KL divergence는 비대칭적인 형태라는 점을 기억해두시길 바랍니다. 또한 p(x)가 0에 가깝고 q(x)가 non-zero일 경우, q의 효과는 무시됩니다. 이로 인해 두 분포를 동등하게 사용하여 유사도를 측정하고자 할때 잘못된 결과를 얻을수 있습니다.
+D<sub>KL</sub>는 p(x)==q(x)일때 최소값 zero를 갖습니다. KL divergence는 비대칭적인 형태라는 점을 기억해두시길 바랍니다. 또한 p(x)가 0에 가깝고 q(x)가 non-zero일 경우, q의 효과는 무시됩니다. 이로 인해 두 분포를 동등하게 사용하여 유사도를 측정하고자 할때 잘못된 결과를 얻을수 있습니다.
 
 2) [Jensen-Shannon Divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence) 는 두 분포의 유사도를 특정하는 다른 메트릭으로 [0, 1] 사이값을 갖습니다. JS divergence는 대칭적입니다(야호!) 그리고 더 스무스(smooth)합니다. KL divergence와 JS divergence를 더 자세히 비교하는 내용은 이 [Quora post](https://www.quora.com/Why-isnt-the-Jensen-Shannon-divergence-used-more-often-than-the-Kullback-Leibler-since-JS-is-symmetric-thus-possibly-a-better-indicator-of-distance)를 참고하세요.
 
@@ -26,20 +46,20 @@ KL divergence는 비대칭적인 형태라는 점을 기억해두시길 바랍�
 
 <img src ='KL_JS_divergence.png' width=400></img>
 
-<i>Fig.1. 두 가우시안 분포, p는 평균 0과 분산 1이고 q는 평균 1과 분산 1. 두 분포의 평균은 m=(p+q)/2. KL divergence는 비대칭적이지만 JS divergence는 대칭적이다. </i>
+<i>Fig.1. 두 가우시안 분포, p는 평균 0과 분산 1이고 q는 평균 1과 분산 1. 두 분포의 평균은 m=(p+q)/2. KL divergence는 비대칭적이지만 JS divergence는 대칭적입니다. </i>
 
-### Generative Adversarial Network (GAN)
+## Generative Adversarial Network (GAN)
 
 GAN은 두 모델로 이루어져있습니다.
 
-* discriminator D는 주어진 샘플이 실제 데이터셋에서 나왔을 확률을 추정합니다. 감별사 역할로 실제 샘플과 가짜 샘플을 구분하도록 최적화되어 있습니다.
-* generator G는 노이즈 변수인 z(z는 잠재적으로 출력의 다양성을 나타냅니다)를 입력으로 받아 위조된 샘플을 만듭니다. 실제 데이터의 분포를 모사하도록 학습되어 생성한 샘플은 실제 데이터의 샘플과 유사하며, discriminator를 속이는 역할을 합니다.
+* discriminator D는 주어진 샘플이 실제 데이터셋에서 나왔을 확률을 추정합니다. 감별사 역할로 실제 샘플과 가짜 샘플을 구분하도록 최적화됩니다.
+* generator G는 노이즈 변수인 z (z는 가능한 출력의 다양성을 나타냅니다)를 입력으로 받아 위조된 샘플을 만듭니다. 실제 데이터의 분포를 모사하도록 학습되어 생성된 샘플은 실제 데이터의 샘플과 유사하며, discriminator를 속이는 역할을 합니다.
 
 <img src ='GAN.png' width=400></img>
 
 <i>Fig.2. GAN의 구조 (출처 : [여기](https://www.kdnuggets.com/2017/01/generative-adversarial-networks-hot-topic-machine-learning.html))</i>
 
-학습과정에서 두 모델은 경쟁구조에 놓여 있습니다: G는 D를 속이려고 하고, 동시에 D는 속지 않으려고 합니다. zero-sum 게임에서 두 모델은 각자의 기능을 최대로 향상시킴으로써 서로의 목적을 달성하게 됩니다. 
+학습과정에서 두 모델은 경쟁구조에 놓여 있습니다 : G는 D를 속이려고 하고, 동시에 D는 속지 않으려고 합니다. zero-sum 게임에서 두 모델은 각자의 기능을 최대로 향상시킴으로써 서로의 목적을 달성하게 됩니다. 
 
 | Symbol | Meaning | Notes
 ---------|---------|----
@@ -48,9 +68,9 @@ p<sub>g</sub> | data x에 대한 generator의 분포| |
 p<sub>r</sub> | 실제 샘플 x에 대한 데이터 분포 | |
 ---
 
-우리는 실제 데이터에서 뽑힌 샘플 x의 D의 감별 확률이 높기를 원합니다. 반면에 생성된 샘플 G(z)에 대해서는, z ~ p<sub>z</sub>(z), D의 감별결과값 D(G(z))이 zero에 가깝기를 원합니다. 즉, E<sub>x ~ p<sub>r</sub>(x)</sub>[logD(x)]와 E<sub>z ~ p<sub>z</sub>(z)</sub>[log(1-D(G(z))]가 최대화되길 원합니다. 
+우리는 실제 데이터에서 뽑힌 샘플 x에 대해서 D가 높은 확률로 진짜라고 감별하기를 원합니다. 반면에 생성된 샘플 G(z)에 대해서는, z ~ p<sub>z</sub>(z), D의 감별결과값 D(G(z))이 zero에 가깝기를 원합니다. 즉, E<sub>x ~ p<sub>r</sub>(x)</sub>[ logD(x) ]와 E<sub>z ~ p<sub>z</sub>(z)</sub>[ log ( 1 - D(G(z))) ]가 최대화되길 원합니다. 
 
-하지만 G는 위조된 샘플이 D가 높은 확률로 진짜 데이터라고 판단하도록 학습됩니다. 그래서 E<sub>z ~ p<sub>z</sub>(z)</sub>[log(1-D(G(z))]가 최소화되길 원합니다.
+하지만 G는 위조된 샘플을 D가 높은 확률로 진짜 데이터라고 판단하도록 최적화됩니다. 따라서 E<sub>z ~ p<sub>z</sub>(z)</sub> [ log ( 1 - D(G(z))) ]가 최소화되길 원합니다.
 
 이 두 가지를 합쳐서, D와 G는 minmax game을 하게 되고 아래와 같은 손실함수를 최적화하도록 설계되어 있습니다. 
 
@@ -194,7 +214,7 @@ P를 Q처럼 바꾸기 위해서는
 
 P<sub>i</sub>와 Q<sub>i</sub>가 같아지게 하는데 드는 비용을 δ<sub>i</sub>라고 표시하면, δ<sub>i+1</sub> =  δ<sub>i</sub> +  P<sub>i</sub> -  Q<sub>i</sub>로 나타낼수 있습니다. 따라서 위의 과정을 수식으로 표현하면 아래와 같습니다.
 
-<img src='P_Q2.png' width=200></img>
+<img src='P_Q2.png' width=150></img>
 
 최종적으로 Earth Mover's distance W = ∑|δ<sub>i</sub>| = 5 가 됩니다.
 
@@ -204,18 +224,18 @@ P<sub>i</sub>와 Q<sub>i</sub>가 같아지게 하는데 드는 비용을 δ<sub
 
 연속형 확률분포이 경우에는 아래와 같은 공식을 사용합니다.
 
-<img src ='w_distance.png' width=200> </img>
+<img src ='w_distance.png' width=300> </img>
 
 이 공식에서 Π(p<sub>r</sub>, p<sub>g</sub>)는  p<sub>r</sub>과 p<sub>g</sub> 사이의 가능한 모든 결합확률분포(joint probability distribution)의 집합을 나타냅니다. 이 집합에 속하는 감마라는 분포는, γ ∈ Π(p<sub>r</sub>,p<sub>g</sub>), 위의 예시처럼 흙더미는 옮기는 한가지 방법에 대응됩니다(연속확률분포라는 점은 다르고요). 정확하게 설명하면, γ(x, y)는 x가 y분포를 따르게 하기 위해서 x에서 y로 옮겨야하는 흙더미의 비율을 나타냅니다. 따라서 γ(x, y)를 x에 대한 marigal distribution으로 계산하면 p<sub>g</sub>와 같아집니다. ∑<sub>x</sub> γ(x,y)=p<sub>g</sub>(y) (x를 p<sub>g</sub>를 따르는 y가 되도록 흙더미를 옮기고 나면, 마지막 분포는 p<sub>g</sub>와 같아지겠죠) 마찬가지로 y에 대한 marginal distribution은 p<sub>r</sub>(x)가 됩니다. ∑<sub>y</sub> γ(x,y)=p<sub>r</sub>(x)
 
 x를 출발점으로 하고 y를 도착점으로 할 때, 전체 옮겨지는 흙의 양은 γ(x,y)이고, 이동하는 거리는 ||x-y||이기때문에 총 비용은 γ(x,y)*||x-y||가 됩니다. 모든 (x, y)경우에 대해서 기대 비용을 구하면 아래와 같습니다.
 
-<img src ='EM_distance.png' width=200> </img>
+<img src ='EM_distance.png' width=300> </img>
 
 
 최종적으로 우리는 EM distance로 계산되는 모든 값 중에서 최소값을 선택합니다. 위의 Wasserstein distance 정의에서 inf는 최소값에만 관심이 있다는 표시입니다. ([infimum](https://en.wikipedia.org/wiki/Infimum_and_supremum), greatest lower bound로도 알려져있습니다)
 
-## why Wasserstein is better than JS or KL divergence?
+### why Wasserstein is better than JS or KL divergence?
 
 저차원 매니폴드에서 두 분포가 겹치지 않을 때, Wasserstein distance는 여전히 의미있는 값과 연속적으로(smooth, 미분가능하게) 표현됩니다. 
 
@@ -223,15 +243,15 @@ WGAN 논문에서는 간단한 예제를 통해서 이 아이디어를 설명합
 
 P와 Q라는 두 분포가 있다고 가정합시다.
 
-<img src ='P-Q_vertical.png' width=200> </img>
+<img src ='P-Q_vertical.png' width=300> </img>
 
 <img src ='wasserstein_simple_example.png' width=400> </img>
 
-<i>Fig.8. θ가 0이 아니라면 P와 Q는 겹치지 않음.
+<i>Fig.8. θ가 0이 아니라면 P와 Q는 겹치지 않음.</i>
 
 when θ≠0 :
 
- <img src ='w_simle_example.png' width=400> </img>
+ <img src ='w_simle_example.png' width=500> </img>
 
 when θ = 0일때는 두 분포는 완전히 겹쳐집니다 :
 
@@ -239,7 +259,7 @@ when θ = 0일때는 두 분포는 완전히 겹쳐집니다 :
 
 D<sub>KL</sub>는 두 분포가 서로 겹치지 않을 때는 무한대 값을 갖게 되고, D<sub>JS</sub>는 θ가 0일 때 값이 갑자기 튀게 되어 미분불가능해집니다. Wasserstein metric만 연속적인 값으로 측정되며, 이러한 성질은 그래디언 디센트를 사용하여 안정적인 학습을 하는데 큰 도움이 됩니다!
 
-## Use Wasserstein distance as GAN loss function
+### Use Wasserstein distance as GAN loss function
 
 inf<sub>γ∼Π(p<sub>r</sub>,p<sub>g</sub>)</sub>를 구하기 위해 Π(p<sub>r</sub>, p<sub>g</sub>)에 속하는 모든 경우의 결합확률분포를 추적하는 것은 불가능합니다. 논문의 저자는 Kantorovich-Rubinstein duality를 이용해 새롭게 변형된 형태를 제안하였습니다.
 
@@ -257,8 +277,60 @@ sup([supremum](https://en.wikipedia.org/wiki/Infimum_and_supremum))는 inf(infim
 
 Wasserstein distance를 어떻게 변경하는지 설명하는 것은 그 자체로서 의미가 있기때문에 여기서는 자세한 내응은 스킵하도록 하겠습니다.  만약 선형 프로그래밍을 사용하여 Wasserstein metric를 계산하는 방법이 알고 싶거나,  Kantorovich-Rubinstein Duality를 통해 어떻게 그 쌍대 문제로 변형되는지 알고 싶다면 [이 포스트](https://vincentherrmann.github.io/blog/wasserstein/)를 참고하세요.
 
+함수 f가 w를 파라미터로 가진 K-Lipschitz continuous functions의 집합, {f<sub>w</sub>}<sub>w ∈ W</sub> 에서 추출되었다고 가정해봅시다. 수정된 Wassertein-GAN에서 discriminator는 좋은 f<sub>w</sub>를 찾기위해 학습이 되고, 손실함수는 p<sub>r</sub>과 p<sub>g</sub> 사이의 wasserstein distance를 측정하게 됩니다. 
 
+ <img src ='WGAN_loss.png' width=300> </img>
 
+따라서 discriminator는 더이상 진짜 데이터와 generator가 생성한 가짜 데이터를 식별하는 직접적인 기준치가 아닙니다. 대신에 Wasserstein distance를 계산하기 위기 위해 사용되는 K-Lipschitz continuous function을 학습하게 됩니다. 학습과정에서 손실함수가 작아질수록, wasserstein distance는 점점 작아지게 되어 generator의 결과값은 실제 데이터 분포와 점점 가까워지게 됩니다.
 
+한가지 중요한 문제는 모든 것이 잘 작동하기 위해서는 학습과정에서 K-Lipschitz continuity를 유지하도록 하는 것입니다. 논문에서는 간단하지만 매우 실용적인 트릭을 사용하였습니다. 그래디어트가 업데이트될 때마다, 가중치 w를 아주 작은 범위로, 예를 들면 [-0.01, 0.01]로 고정시면 컴팩트한 파라미터 공간 W가 되도록 합니다.  f<sub>w</sub>는 하한선과 상한선이 생기게 되어 Lipschitz continuity를 유지하게 됩니다. 
 
+ <img src ='WGAN_algorithm.png' width=400> </img>
+
+<i>Fig.9. Wasserstein GAN 알고리즘 (Image source : [Arjovsky, Chintala, & Bottou, 2017.](https://arxiv.org/pdf/1701.07875.pdf) </i>
+
+원래의 GAN 알고리즘과 비교하여 WGAN은 다음과 같은 변경을 수행합니다 :
+
+* 손실함수가 업데이트된 후, 가중치는 고정된 작은 범위 [-c, c]사이값으로 고정됩니다.
+* Wasserstein distance로 부터 유도된 새로운 손실함수를 사용합니다. (로그 형태가 더이상 아닙니다) discriminator는 직접적인 식별자 역할을 하지 않고 실제 데이터 분포와 생성자의 분포 간에 거리를 추정하는 것을 도와주게 됩니다.
+* 논문의 저자는 [Adam](https://arxiv.org/abs/1412.6980v8)과 같은 모멘텀 기반의 옵티마이저를 사용하는 것이 학습과정에서 불안정성을 야기하기 때문에, 실험적으로 [RMSProp](http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf) 옵티마이저를 사용하는 것을 추천하였습니다.  (이 부분에 대해서는 명확한 이론적 설명을 하지 않았습니다)
+
+슬프게도 Wasserstein GAN은 완벽하지 않습니다. 심지어 WGAN 논문에서도 "가중치를 고정시키는 것은 명백히 Lipschitz constraint를 강제하는 끔찍한 방법"이라고 했습니다.(웁스!) WGAN은 여전히 학습이 불안정하거나, 가중치를 고정시킨 후 수렴속도가 느려지거나(고정 범위가 너무 큰 경우에 해당), 그래디언트가 사라지는(고정 범위가 너무 작은 경우)문제가 생길수 있습니다. 
+
+이후 가중치를 고정시키는 방법 대신에 그래디언트 패널티를 사용하는 등의 개선책이 논의되기도 하였습니다.[Gulrajani et al. 2017.](https://arxiv.org/pdf/1704.00028.pdf) 여기서는 자세히 설명하진 않겠습니다.
+
+## Example : Create New Pokemons!
+
+[carpedm20/DCGAN-tensorflow](https://github.com/carpedm20/DCGAN-tensorflow)을 작은 데이터셋 [Pokemon sprites](https://github.com/PokeAPI/sprites/)에 적용해보았습니다. 같은 종이지만 다른 레벨까지 포함하여 총 900장의 포켓몬 이미지가 있습니다. 
+
+모델이 만든 새로운 포켓몬 종류를 확인해보겠습니다. 불행히도 학습데이터가 적어서 새로운 포켓몬은 디테일이 잘 살아나지 않고 러프한 모양압니다. 전체적인 형태나 색깔은 학습 에폭이 진행될수록 더 나아지는 것으로 보이네요. 와우!
+
+ <img src ='pokemon-GAN.png' width=400> </img>
+
+<i>Fig.10. 포켓몬 이미지에 [carpedm20/DCGAN-tensorflow](https://github.com/carpedm20/DCGAN-tensorflow)를 학습시킨 결과. epoches = 7, 21, 49에서 샘플 결과들.
+</i>
+
+만약 [carpedm20/DCGAN-tensorflow](https://github.com/carpedm20/DCGAN-tensorflow)에 관심이 있고, 이 알고리즘을 WGAN이나 그래디언 패널티를 사용한 WGAN으로 수정하는 것이 궁금하다면 [lilianweng/unified-gan-tensorflow](https://github.com/lilianweng/unified-gan-tensorflow)를 확인해주세요.
+
+## Reference
+
+[0] Original post : [lilianweng/fromGANtoWGAN](https://lilianweng.github.io/lil-log/2017/08/20/from-GAN-to-WGAN.html#use-wasserstein-distance-as-gan-loss-function)
+
+[1] Goodfellow, Ian, et al. [“Generative adversarial nets.”](https://arxiv.org/pdf/1406.2661.pdf) NIPS, 2014.
+
+[2] Tim Salimans, Ian Goodfellow, Wojciech Zaremba, Vicki Cheung, Alec Radford, and Xi Chen. [“Improved techniques for training gans.”](http://papers.nips.cc/paper/6125-improved-techniques-for-training-gans.pdf) In Advances in Neural Information Processing Systems.
+
+[3] Martin Arjovsky and Léon Bottou. [“Towards principled methods for training generative adversarial networks.”](https://arxiv.org/pdf/1701.04862.pdf) arXiv preprint arXiv:1701.04862 (2017).
+
+[4] Martin Arjovsky, Soumith Chintala, and Léon Bottou. [“Wasserstein GAN.”](https://arxiv.org/pdf/1701.07875.pdf) arXiv preprint arXiv:1701.07875 (2017).
+
+[4] Ishaan Gulrajani, Faruk Ahmed, Martin Arjovsky, Vincent Dumoulin, Aaron Courville. [Improved training of wasserstein gans.](https://arxiv.org/pdf/1704.00028.pdf) arXiv preprint arXiv:1704.00028 (2017).
+
+[5] [Computing the Earth Mover’s Distance under Transformations](http://robotics.stanford.edu/~scohen/research/emdg/emdg.html)
+
+[6] [Wasserstein GAN and the Kantorovich-Rubinstein Duality](https://vincentherrmann.github.io/blog/wasserstein/)
+
+[7] [zhuanlan.zhihu.com/p/25071913](https://zhuanlan.zhihu.com/p/25071913)
+
+[8] Ferenc Huszár. [“How (not) to Train your Generative Model: Scheduled Sampling, Likelihood, Adversary?.”](https://arxiv.org/pdf/1511.05101.pdf) arXiv preprint arXiv:1511.05101 (2015).
 
