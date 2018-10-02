@@ -13,7 +13,7 @@
 ### Materials I studied
 * [Rand Index](https://yjucho1.github.io/clustering%20evaluation/rand-index/)
 
-* [Mutual Infomation](https://yjucho1.github.io/clustering%20evaluation/clustering-metrics/)
+* [Mutual Infomation](https://yjucho1.github.io/clustering%20evaluation/mutual-information/)
 
 * [From GAN to WGAN](https://github.com/yjucho1/articles/blob/master/fromGANtoWGAN/readme.md)
 
