@@ -1,4 +1,4 @@
-*2018.10.14 updated : 지금은 깃헙 블로그로 이사했습니다. 블로그로 놀러오세요 :) *
+<b> 2018.10.14 updated </b> : 지금은 깃헙 블로그로 이사했습니다. 블로그로 놀러오세요 :) 
 [https://yjucho1.github.io/](https://yjucho1.github.io/)
 
 # Contents
