@@ -1,3 +1,6 @@
+*2018.10.14 updated : 지금은 깃헙 블로그로 이사했습니다. 블로그로 놀러오세요 :) *
+[https://yjucho1.github.io/](https://yjucho1.github.io/)
+
 # Contents
 ### Papers I read
 * [Unsupervised Deep Embedding for Clustering Analysis, J. Xie, R. Girshick, A. Farhadi (University of Washington, Facebook AI Reaserch), 2016](https://github.com/yjucho1/articles/blob/master/DEC/readme.md)
