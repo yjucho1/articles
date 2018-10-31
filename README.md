@@ -3,6 +3,8 @@
 
 # Contents
 ### Papers I read
+* [Attention Is All You Need](https://yjucho1.github.io/attention/attention-is-all-you-need/)
+
 * [Unsupervised Deep Embedding for Clustering Analysis, J. Xie, R. Girshick, A. Farhadi (University of Washington, Facebook AI Reaserch), 2016](https://github.com/yjucho1/articles/blob/master/DEC/readme.md)
 
 * [Visualizing and Understanding Convolutional Networks, Matthew D. Zeiler, Rob Fergus, 2013](https://github.com/yjucho1/articles/blob/master/VisualizingCNN/README.md)
@@ -14,6 +16,8 @@
 * [Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift, Sergey Ioffe, Christian Szegedy  Google Inc., 2015](https://github.com/yjucho1/articles/blob/master/batch%20normalization/readme.md)
 
 ### Materials I studied
+* [recommender systems by Andrew Ng](https://yjucho1.github.io/recommender%20systems/recommendation/)
+
 * [Rand Index](https://yjucho1.github.io/clustering%20evaluation/rand-index/)
 
 * [Mutual Infomation](https://yjucho1.github.io/clustering%20evaluation/mutual-information/)
